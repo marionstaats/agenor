@@ -117,7 +117,7 @@
         </v-tabs>
 
         <v-spacer></v-spacer>
-
+        
         <!-- Social media -->
         <v-btn icon>
             <v-icon>mdi-facebook</v-icon>
@@ -127,7 +127,15 @@
             <v-icon>mdi-instagram</v-icon>
         </v-btn>
 
-        <v-btn icon v-if="loggedin">
+        <!-- Back to admin menu -->
+        <v-btn class="mr-3 gold" v-if="this.$route.path === `/item/${this.$route.params.id}`" to="/admin">
+            <v-icon>mdi-arrow-left</v-icon>
+            <span>Admin</span>
+        </v-btn>
+
+        <!-- Logout -->
+        <v-btn class="gold" v-if="(this.$route.path === '/admin') || (this.$route.path === `/item/${this.$route.params.id}`)">
+            <span>Logout</span>
             <v-icon>mdi-logout</v-icon>
         </v-btn>
 
@@ -138,7 +146,6 @@
 <script>
 export default {
     data: () => ({
-        loggedin: false,
         drawer: false,
         vieuxmenu: [
             { title: 'Bagues', path: '/vieux'},
@@ -149,7 +156,7 @@ export default {
             { title: 'Outils de scribe', path: '/'},
             { title: 'Vie quotidienne', path: '/'}
         ],
-    }),
+    })
 }
 </script>
 

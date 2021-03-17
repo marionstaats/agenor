@@ -11,7 +11,7 @@ import java.util.*;
 
 //Run command: mvnw spring-boot:run
 
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:8082")
 @RestController
 @RequestMapping("/api")
 public class ItemController {
@@ -105,6 +105,7 @@ public class ItemController {
         }
     }
 
+/*
     @DeleteMapping("/items")
     public ResponseEntity<HttpStatus> deleteAllItems() {
         try {
@@ -115,5 +116,6 @@ public class ItemController {
         }
 
     }
+*/
 
 }

@@ -27,13 +27,18 @@ const routes = [
     component: () => import('../views/Workproces.vue')
   },
   {
+    path: '/login',
+    name: 'Login',
+    component: () => import('../views/Login.vue')
+  },
+  {
     path: '/admin',
     name: 'Admin',
     component: () => import('../views/Admin.vue')
   },
   {
     path: "/item/:id",
-    name: "item-edit",
+    name: "item",
     component: () => import("../views/Item")
   },
 

@@ -1,60 +1,107 @@
 <template>
     <v-row justify="center">
-        <!-- Image -->
-        <v-col cols="10" md="5" class="ma-md-3" >
-            <v-img v-bind:src="currentitem.image" max-height="500">
-            </v-img>
-            <v-btn id="upload_widget" color="accent" class="mt-5" @click="openUploadModal">Change image</v-btn>
+        <!-- Images -->
+        <v-col cols="10" md="4" class="ma-md-3" >
+            <v-img :src="currentItem.mainImage" contain></v-img>
+            <v-btn id="upload_widget" color="accent" class="mt-5">Change main image</v-btn>
+        </v-col>
+
+        <v-col cols="10" md="2" class="ma-md-3" align="center">
+            
+            <v-row>
+                <v-col cols="12" >
+                    <v-img :src="currentItem.smallImage1" max-height="200" contain>
+                    </v-img>
+                    <v-btn id="upload_widget" color="accent" class="mt-3" small>Change small image 1</v-btn>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col cols="12">
+                    <v-img :src="currentItem.smallImage2" max-height="200" contain>
+                    </v-img>
+                    <v-btn id="upload_widget" color="accent" class="mt-3" small>Change small image 2</v-btn>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col cols="12">
+                    <v-img :src="currentItem.smallImage3" max-height="200" contain>
+                    </v-img>
+                    <v-btn id="upload_widget" color="accent" class="mt-3" small>Change small image 3</v-btn>
+                </v-col>
+            </v-row>
+            
         </v-col>
 
         <!-- Info -->
-        <v-col cols="12" md="6" align="center">
-            <div v-if="currentitem" class="edit-form pa-5 ma-3">
+        <v-col cols="12" md="4" align="center">
+            <div v-if="currentItem" class="edit-form pa-5 ma-3">
                 <p class="headline">Edit your item</p>
 
                 <v-form ref="form" lazy-validation>
-                <v-text-field
-                    v-model="currentitem.title"
-                    :rules="[(v) => !!v || 'Title is required']"
-                    label="Title"
-                    required
-                    color="secondary"
-                ></v-text-field>
+                    <v-text-field
+                        v-model="currentItem.title"
+                        :rules="[(v) => !!v || 'Title is required']"
+                        label="Title"
+                        required
+                        color="secondary"
+                    ></v-text-field>
 
-                <v-textarea
-                    v-model="currentitem.description"
-                    :rules="[(v) => !!v || 'Description is required']"
-                    label="Description"
-                    required
-                    color="secondary"
-                ></v-textarea>
+                    <v-row>
+                        <v-col cols="12" sm="6">
+                            <v-text-field
+                            label="Price"
+                            v-model="currentItem.price"
+                            :rules="[(v) => !!v || 'Price is required']"
+                            prefix="€"
+                            color="secondary"
+                            required
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6">
+                            <v-select
+                            :items="types"
+                            label="Type"
+                            v-model="currentItem.type"
+                            color="secondary"
+                            ></v-select>
+                        </v-col>
+                    </v-row>
+                    <v-textarea
+                        v-model="currentItem.description"
+                        :rules="[(v) => !!v || 'Description is required']"
+                        label="Description"
+                        maxlength="255"
+                        required
+                        counter
+                        color="secondary"
+                    ></v-textarea>
 
-                <label><strong>Status:</strong></label>
-                {{ currentitem.published ? "Published" : "Pending" }}
+                    <label><strong>Status:</strong></label>
+                    {{ currentItem.published ? "Published" : "Not published" }}
 
-                <v-divider class="my-5"></v-divider>
+                    <v-divider class="my-5"></v-divider>
 
-                <v-btn v-if="currentitem.published"
-                    @click="updatePublished(false)"
-                    color="blue" small class="mr-2"
-                >
-                    Unpublish
-                </v-btn>
+                    <v-btn v-if="currentItem.published"
+                        @click="updatePublished(false)"
+                        color="purple" small class="mr-2 white--text"
+                    >
+                        Unpublish
+                    </v-btn>
 
-                <v-btn v-else
-                    @click="updatePublished(true)"
-                    color="secondary" small class="mr-2 black--text"
-                >
-                    Publish
-                </v-btn>
+                    <v-btn v-else
+                        @click="updatePublished(true)"
+                        color="secondary" small class="mr-2"
+                    >
+                        Publish
+                    </v-btn>
 
-                <v-btn color="error" small class="mr-2" @click="deleteitem">
-                    Delete
-                </v-btn>
+                    <v-btn color="error" small class="mr-2" @click="deleteItem">
+                        Delete
+                    </v-btn>
 
-                <v-btn color="accent" small @click="updateitem">
-                    Update
-                </v-btn>
+                    <v-btn color="success" small @click="updateItem">
+                        Update
+                    </v-btn>
                 </v-form>
 
                 <p class="mt-3">{{ message }}</p>
@@ -77,84 +124,78 @@ export default {
     name: "item",
     data() {
         return {
-        currentitem: null,
+        currentItem: {},
         message: "",
+        types: ['broche', 'necklace', 'bague']
         };
     },
     methods: {
-        getitem(id) {
-        itemDataService.get(id)
-            .then((response) => {
-            this.currentitem = response.data;
-            })
-            .catch((e) => {
-            console.log(e);
-            });
-        },
-
-        updatePublished(status) {
-            var data = {
-                id: this.currentitem.id,
-                title: this.currentitem.title,
-                description: this.currentitem.description,
-                published: status,
-                image: this.currentitem.image
-            };
-
-            itemDataService.update(this.currentitem.id, data)
-                .then(() => {
-                this.currentitem.published = status;
+        getItem(id) {
+            itemDataService.get(id)
+                .then((response) => {
+                this.currentItem = response.data;
                 })
                 .catch((e) => {
                 console.log(e);
                 });
         },
 
-        updateitem() {
-        itemDataService.update(this.currentitem.id, this.currentitem)
-            .then((response) => {
-            console.log(response.data);
-            this.message = "The item was updated successfully!";
-            })
-            .catch((e) => {
-            console.log(e);
-            });
-        },
-
-        deleteitem() {
-        itemDataService.delete(this.currentitem.id)
-            .then(() => {
-            this.$router.push({ name: "items" });
-            })
-            .catch((e) => {
-            console.log(e);
-            });
-        },
-
-        openUploadModal() {
-            window.cloudinary.openUploadWidget(
-                { cloud_name: 'dfqpsmhyl',
-                upload_preset: 'ml_default_preset'
-                },
-                (error, result) => {
-                if (!error && result && result.event === "success") {
-                    this.currentitem.image = result.info.url;
-                    this.updateImage(); 
-                    }
-                }).open();
-        },
-
-        updateImage() {
+        updatePublished(status) {
             var data = {
-                id: this.currentitem.id,
-                name: this.currentitem.name,
-                gender: this.currentitem.gender,
-                description: this.currentitem.description,
-                published: this.currentitem.status,
-                image: this.currentitem.image
+                id: this.currentItem.id,
+                title: this.currentItem.title,
+                price: this.currentItem.price,
+                description: this.currentItem.description,
+                published: status,
+                mainImage: this.currentItem.mainImage,
+                smallImage1: this.currentItem.smallImage1,
+                smallImage2: this.currentItem.smallImage2,
+                smallImage3: this.currentItem.smallImage3
             };
 
-            itemDataService.update(this.currentitem.id, data)
+            itemDataService.update(this.currentItem.id, data)
+                .then(() => {
+                this.currentItem.published = status;
+                })
+                .catch((e) => {
+                console.log(e);
+                });
+        },
+
+        updateItem() {
+            itemDataService.update(this.currentItem.id, this.currentItem)
+                .then((response) => {
+                    console.log(response.data);
+                    this.message = "The item was updated successfully!";
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+        },
+
+        deleteItem() {
+            itemDataService.delete(this.currentItem.id)
+                .then(() => {
+                this.$router.push({ name: "admin" });
+                })
+                .catch((e) => {
+                console.log(e);
+                });
+        },
+        updateImage() {
+            var data = {
+                id: this.currentItem.id,
+                title: this.currentItem.title,
+                price: this.currentItem.price,
+                description: this.currentItem.description,
+                published: this.currentItem.status,
+                mainImage: this.currentItem.mainImage,
+                smallImage1: this.currentItem.smallImage1,
+                smallImage2: this.currentItem.smallImage2,
+                smallImage3: this.currentItem.smallImage3
+            };
+
+            itemDataService.update(this.currentItem.id, data)
                 .then((res) => {
                 console.log(res);
                 })
@@ -165,11 +206,10 @@ export default {
     },
     mounted() {
         this.message = "";
-        this.getitem(this.$route.params.id);
+        this.getItem(this.$route.params.id);
     },
 }
 </script>
 
 <style>
-
 </style>
