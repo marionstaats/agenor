@@ -17,8 +17,8 @@ public class ImageStorageService {
     private ImageRepository imageRepository;
 
     public Image store(MultipartFile image) throws IOException {
-        String fileName = StringUtils.cleanPath(image.getOriginalFilename());
-        Image _image = new Image(fileName, image.getContentType(), image.getBytes());
+        String imageName = StringUtils.cleanPath(image.getOriginalFilename());
+        Image _image = new Image(imageName, image.getContentType(), image.getBytes());
 
         return imageRepository.save(_image);
     }

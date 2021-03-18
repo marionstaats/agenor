@@ -19,6 +19,9 @@ public class Image {
     @Lob
     private byte[] data;
 
+    public Image() {
+    }
+
     public Image(String name, String type, byte[] data) {
         this.name = name;
         this.type = type;
