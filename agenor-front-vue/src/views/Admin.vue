@@ -14,7 +14,7 @@
                         class="mx-5"
                     ></v-text-field>
 
-                    <AddNewItem />
+                    <AddNewItem v-on:refreshItems="retrieveItems" />
                 </v-card-title>
 
                 <v-data-table

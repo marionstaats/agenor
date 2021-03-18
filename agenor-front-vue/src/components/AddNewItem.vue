@@ -78,33 +78,32 @@
 
                             <!-- Images -->
                             <v-col cols="12" md="5">
-                                <v-file-input
-                                    v-model="currentItem.mainImage"
-                                    :rules="[(v) => !!v || 'Main image is required']"
-                                    prepend-icon="mdi-camera"
-                                    label="Main image"
-                                    accept="image/*"
-                                    required
-                                ></v-file-input>
+                                <v-alert v-if="message" color="red" dark dense>
+                                    {{ message }}
+                                </v-alert>
+                                <v-row>
+                                    <v-col cols="9">
+                                        <v-file-input
+                                            :rules="[(v) => !v || v.size < 1000000 || 'Image should be less than 1 MB']"
+                                            prepend-icon="mdi-camera"
+                                            label="Images"
+                                            accept="image/*"
+                                            show-size
+                                            required
+                                            @change="selectFile"
+                                        ></v-file-input>
+                                    </v-col>
+                                    <v-col cols="3" align-self="center">
+                                        <v-btn color="success" dark small @click="upload">
+                                            Upload
+                                        </v-btn>
+                                    </v-col>
+                                </v-row>
+                                
+                                <div v-for="(name, i) in imageNames" :key="i">
+                                    {{ name }}
+                                </div>
 
-                                <v-file-input
-                                    v-model="currentItem.smallImage1"
-                                    prepend-icon="mdi-camera"
-                                    label="Small image 1"
-                                    accept="image/*"
-                                ></v-file-input>
-                                <v-file-input
-                                    v-model="currentItem.smallImage2"
-                                    prepend-icon="mdi-camera"
-                                    label="Small image 2"
-                                    accept="image/*"
-                                ></v-file-input>
-                                <v-file-input
-                                    v-model="currentItem.smallImage3"
-                                    prepend-icon="mdi-camera"
-                                    label="Small image 3"
-                                    accept="image/*"
-                                ></v-file-input>
                             </v-col>
                         </v-row>
 
@@ -135,23 +134,67 @@
 </template>
 
 <script>
+import imageDataService from "@/services/imageDataService";
+import itemDataService from "@/services/itemDataService";
+
 export default {
     data: () => {
         return {
             dialog: false,
-            currentItem: {},
+            currentImage: undefined,
+            imageNames: [],
+            message: "",
+            currentItem: {
+                title: "",
+                price: 0,
+                description: "",
+                published: "",
+                mainImage: "",
+                smallImage1: "",
+                smallImage2: "",
+                smallImage3: ""
+            },
             types: ['broche', 'necklace', 'bague']
         }
     },
     methods: {
 
+        selectFile(file) {
+            this.message = "";
+            this.currentImage = file;
+        },
+        upload() {
+            if (!this.currentImage) {
+                this.message = "Please select a file!";
+                return;
+            }
+
+            this.message = "";
+
+            imageDataService.upload(this.currentImage)
+                .then((response) => {
+                    this.message = response.data.message;
+                    this.imageNames.push(this.currentImage.name);
+                    this.currentItem.mainImage = response.data.id;
+                    this.currentImage = undefined;
+                    return imageDataService.get(response.data.id);
+                })
+                .catch((e) => {
+                    this.message = "Could not upload the file!";
+                    this.currentImage = undefined;
+                    console.log(e);
+                });
+        },
         close () {
             this.$refs.form.reset();
+            this.$emit('refreshItems');
+            this.imageNames = [];
             this.dialog = false;
         },
         save () {
-            console.log(this.currentItem.mainImage);
-            this.close();
+            itemDataService.create(this.currentItem)
+                .then( () => this.close() )
+                .catch( e => console.log(e) )       
         }
 
     }

@@ -4,4 +4,3 @@
 - Vue
 - Vuetify
 - Vue router
-- Vuex
