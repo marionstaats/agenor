@@ -11,9 +11,9 @@ const routes = [
     component: Home
   },
   {
-    path: '/vieux',
-    name: 'Vieux',
-    component: () => import('../views/Vieux.vue')
+    path: '/historique/:type',
+    name: 'Historique',
+    component: () => import('../views/Historique.vue')
   },
 
   {
@@ -51,5 +51,10 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+// router.beforeEach((to, from, next) => {
+//   if (to.name !== 'Login' && !isAuthenticated) next({ name: 'Login' })
+//   else next()
+// })
 
 export default router

@@ -3,7 +3,7 @@
         <v-container>
             <v-card class="elevation-2 mt-3">
                 <v-card-title>
-                    Aganor items
+                    Agenor items
                     <v-spacer></v-spacer>
                     <v-text-field
                         v-model="search"
@@ -28,7 +28,16 @@
                             :color="getColor(item.published)"
                             dark
                         >
-                            <v-icon>{{getPublishIcon(item.published)}}</v-icon>
+                            <v-icon>{{getIcon(item.published)}}</v-icon>
+                        </v-chip>
+                    </template>
+
+                    <template v-slot:[`item.inStock`]="{ item }">
+                        <v-chip
+                            :color="getColor(item.inStock)"
+                            dark
+                        >
+                            <v-icon>{{getIcon(item.inStock)}}</v-icon>
                         </v-chip>
                     </template>
 
@@ -80,6 +89,7 @@ export default {
                 { text: "Small image 2", value: "smallImage2", sortable: false, align: "center" },
                 { text: "Small image 3", value: "smallImage3", sortable: false, align: "center" },
                 { text: "Published", value: "published", sortable: true },
+                { text: "In stock", value: "inStock", sortable: true},
                 { text: "Actions", value: "actions", sortable: false },
             ]
         }
@@ -102,6 +112,7 @@ export default {
                 type: item.type,
                 description: item.description.length > 20 ? item.description.substr(0, 20) + "..." : item.description,
                 published: item.published,
+                inStock: item.inStock,
                 mainImage: item.mainImage,
                 smallImage1: item.smallImage1,
                 smallImage2: item.smallImage2,
@@ -112,15 +123,15 @@ export default {
         editItem(id) {
             this.$router.push({ name: "item", params: { id: id } });
         },
-        getColor(published) {
-            if (published) {
+        getColor(isTrue) {
+            if (isTrue) {
                 return 'green';
             } else {
                 return 'red';
             }
         },
-        getPublishIcon(published) {
-            if (published) {
+        getIcon(isTrue) {
+            if (isTrue) {
                 return 'mdi-checkbox-marked-circle'
             } else {
                 return 'mdi-close-circle'

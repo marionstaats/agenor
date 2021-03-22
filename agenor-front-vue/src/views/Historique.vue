@@ -1,6 +1,6 @@
 <template>
     <div class="vieux">
-        <h3 class="ma-4 black--text">Bagues</h3>
+        <h3 class="ma-4 black--text">{{title}}</h3>
         <v-container>
             <v-row>
                 <v-col cols="12" sm="6" xl="4" v-for="(item, index) in items" :key="index">
@@ -14,7 +14,7 @@
                                     class="headline"
                                     v-text="`${item.title}  -  € ${item.price}`"
                                 ></v-card-title>
-                                <v-card-subtitle height="200">{{item.description}}</v-card-subtitle>
+                                <v-card-subtitle height="200" class="text-justify">{{item.description}}</v-card-subtitle>
 
                                 <v-row class="ma-3">
                                     <v-col cols="4">
@@ -61,20 +61,30 @@ import itemDataService from "../services/itemDataService";
 export default {
     data: () => {
         return {
+            title: "",
             items: [],
             dialog: false,
         }
     },
     methods: {
         retrieveItems() {
-            itemDataService.getAll()
+            this.title = this.capitalize(this.$route.params.type);
+            itemDataService.findByType(this.capitalize(this.$route.params.type))
                 .then(response => {
-                    this.items = response.data;
+                    this.items = response.data;         
                 })
                 .catch(e => {
-                    console.log('Error getting all items: ', e);
+                    console.log('Error getting items: ', e);
                 });
         },
+        capitalize(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        },
+    },
+    watch: {
+        '$route.params.type': function() {
+            this.retrieveItems();
+        }
     },
     mounted() {
         this.retrieveItems();

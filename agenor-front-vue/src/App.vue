@@ -25,5 +25,9 @@ export default {
 
 <style>
   @import './assets/css/main.css';
-
+  @font-face {
+  font-family: "oldenglish";
+  src: local("oldenglish"),
+    url(./assets/fonts/OldeEnglish.ttf) format("truetype");
+  }
 </style>

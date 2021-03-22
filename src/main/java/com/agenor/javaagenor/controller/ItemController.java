@@ -20,14 +20,14 @@ public class ItemController {
     ItemRepository itemRepository;
 
     @GetMapping("/items")
-    public ResponseEntity<List<Item>> getAllItems(@RequestParam(required = false) String title) {
+    public ResponseEntity<List<Item>> getAllItems(@RequestParam(required = false) String type) {
         try {
             List<Item> items = new ArrayList<>();
 
-            if (title == null)
+            if (type == null)
                 items.addAll(itemRepository.findAll());
             else
-                items.addAll(itemRepository.findByTitleContaining(title));
+                items.addAll(itemRepository.findByType(type));
 
             if (items.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -35,6 +35,7 @@ public class ItemController {
 
             return new ResponseEntity<>(items, HttpStatus.OK);
         } catch (Exception e) {
+            System.out.println(e);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -60,6 +61,7 @@ public class ItemController {
                             item.getPrice(),
                             item.getDescription(),
                             item.isPublished(),
+                            item.isInStock(),
                             item.getMainImage(),
                             item.getSmallImage1(),
                             item.getSmallImage2(),
@@ -83,6 +85,7 @@ public class ItemController {
             _item.setPrice(item.getPrice());
             _item.setDescription(item.getDescription());
             _item.setPublished(item.isPublished());
+            _item.setInStock(item.isInStock());
             _item.setMainImage(item.getMainImage());
             _item.setSmallImage1(item.getSmallImage1());
             _item.setSmallImage2(item.getSmallImage2());

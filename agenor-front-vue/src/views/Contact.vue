@@ -80,20 +80,19 @@ export default {
             text: 'info@agenor.be',
           },
           {
-            icon: 'mdi-phone',
-            text: '0482829292',
-          },
-          {
             icon: 'mdi-facebook',
             text: 'Link to facebook',
           },
           { icon: 'mdi-instagram',
             text: 'Link to instagram',
+          },
+                    {
+            icon: 'mdi-pinterest',
+            text: 'Link to pinterest',
           }
         ],
         valid: false,
-        firstname: '',
-        lastname: '',
+        name: '',
         nameRules: [
           v => !!v || 'Nom est requise',
         ],

@@ -22,6 +22,9 @@ public class Item {
     @Column(name = "published")
     private boolean published;
 
+    @Column(name = "inStock")
+    private boolean inStock;
+
     @Column(name = "mainImage")
     private String mainImage;
 
@@ -40,11 +43,12 @@ public class Item {
     public Item() {
     }
 
-    public Item(String title, float price, String description, boolean published, String mainImage, String smallImage1, String smallImage2, String smallImage3, String type) {
+    public Item(String title, float price, String description, boolean published, boolean inStock, String mainImage, String smallImage1, String smallImage2, String smallImage3, String type) {
         this.title = title;
         this.price = price;
         this.description = description;
         this.published = published;
+        this.inStock = inStock;
         this.mainImage = mainImage;
         this.smallImage1 = smallImage1;
         this.smallImage2 = smallImage2;
@@ -88,6 +92,10 @@ public class Item {
         this.published = published;
     }
 
+    public boolean isInStock() { return inStock; }
+
+    public void setInStock(boolean inStock) { this.inStock = inStock; }
+
     public String getMainImage() {
         return mainImage;
     }
@@ -130,12 +138,13 @@ public class Item {
 
     @Override
     public String toString() {
-        return "Item [" +
+        return "Item[" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", price=" + price +
                 ", description='" + description + '\'' +
                 ", published=" + published +
+                ", inStock=" + inStock +
                 ", mainImage='" + mainImage + '\'' +
                 ", smallImage1='" + smallImage1 + '\'' +
                 ", smallImage2='" + smallImage2 + '\'' +

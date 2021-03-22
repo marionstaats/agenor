@@ -31,10 +31,10 @@
                         color="rose"
                     >
                         <template v-slot:activator>
-                            <v-list-item-title>Vieux</v-list-item-title>
+                            <v-list-item-title>Catalogue historique</v-list-item-title>
                         </template>
                         <v-list-item
-                            v-for="item in vieuxmenu"
+                            v-for="item in historiqueMenu"
                             :key="item.title"
                             :to="item.path"
                         >
@@ -50,7 +50,7 @@
                         <v-list-item-icon>
                         <v-icon>mdi-string-lights</v-icon>
                         </v-list-item-icon>
-                        <v-list-item-title>Modern</v-list-item-title>
+                        <v-list-item-title>Catalogue moderne</v-list-item-title>
                     </v-list-item>
 
                     <v-list-item to="/procesdetravail">
@@ -71,60 +71,67 @@
         </v-navigation-drawer>
 
         <!-- Menu full screen -->
-        <v-tabs align-with-title color="white" class="hidden-sm-and-down">
-        <v-tab to="/">Agenor</v-tab>
-        <v-menu open-on-hover>
-            <template v-slot:activator="{ on, attrs }">
-            <v-btn
-                text
-                class="align-self-center mr-4"
-                v-bind="attrs"
-                v-on="on"
-            >
-                Catalogue vieux
-            </v-btn>
-            </template>
+        <v-tabs align-with-title color="white" class="hidden-sm-and-down" hide-slider>
+            <v-tab to="/">Agenor</v-tab>
+            <v-menu open-on-hover>
+                <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                    text
+                    class="align-self-center mr-4"
+                    v-bind="attrs"
+                    v-on="on"
+                    v-bind:style= "($route.path.includes('/historique/') ? 'color: white;' : '' )"
+                >
+                    Catalogue historique
+                </v-btn>
+                </template>
 
-            <v-list class="gold"
-                v-for="item in vieuxmenu"
-                :key="item.title"
-                :to="item.path"
-            >
-                <v-list-item :to="item.path">{{item.title}}</v-list-item>
-            </v-list>
-        </v-menu>
-        <v-menu open-on-hover>
-            <template v-slot:activator="{ on, attrs }">
-            <v-btn
-                text
-                class="align-self-center mr-4"
-                v-bind="attrs"
-                v-on="on"
-            >
-                Catalogue modern
-            </v-btn>
-            </template>
+                <v-list class="gold"
+                    v-for="item in historiqueMenu"
+                    :key="item.title"
+                    :to="item.path"
+                >
+                    <v-list-item :to="item.path">{{item.title}}</v-list-item>
+                </v-list>
+            </v-menu>
 
-            <v-list class="gold">
-                <v-list-item>Modern1</v-list-item>
-                <v-list-item>Modenr2</v-list-item>
-            </v-list>
-        </v-menu>
+            <v-menu open-on-hover>
+                <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                    text
+                    class="align-self-center mr-4"
+                    v-bind="attrs"
+                    v-on="on"
+                    v-bind:style= "($route.path.includes('/moderne/') ? 'color: white;' : '' )"
+                >
+                    Catalogue moderne
+                </v-btn>
+                </template>
 
-        <v-tab to="/procesdetravail">Procès de travail</v-tab>
-        <v-tab to="/contact">Contact</v-tab>
+                <v-list class="gold">
+                    <v-list-item>Modern1</v-list-item>
+                    <v-list-item>Modenr2</v-list-item>
+                </v-list>
+            </v-menu>
+
+            <v-tab to="/procesdetravail">Procès de travail</v-tab>
+            <v-tab to="/contact">Contact</v-tab>
 
         </v-tabs>
 
         <v-spacer></v-spacer>
         
         <!-- Social media -->
-        <v-btn icon>
+        <v-btn icon href="https://www.facebook.com">
             <v-icon>mdi-facebook</v-icon>
         </v-btn>
 
-        <v-btn icon>
+        <v-btn icon href="https://www.facebook.com">
             <v-icon>mdi-instagram</v-icon>
+        </v-btn>
+
+        <v-btn icon href="https://www.facebook.com">
+            <v-icon>mdi-pinterest</v-icon>
         </v-btn>
 
         <!-- Back to admin menu -->
@@ -147,19 +154,21 @@
 export default {
     data: () => ({
         drawer: false,
-        vieuxmenu: [
-            { title: 'Bagues', path: '/vieux'},
-            { title: 'Broches', path: '/'},
-            { title: 'Colliers', path: '/'},
-            { title: 'Pendentifs', path: '/'},
-            { title: 'Outils de couture', path: '/'},
-            { title: 'Outils de scribe', path: '/'},
-            { title: 'Vie quotidienne', path: '/'}
+        historiqueMenu: [
+            { title: 'Bagues', path: '/historique/bagues'},
+            { title: 'Broches', path: '/historique/broches'},
+            { title: 'Colliers', path: '/historique/colliers'},
+            { title: 'Pendentifs', path: '/historique/penditifs'},
+            { title: 'Outils de couture', path: '//historique/outilsdecouture'},
+            { title: 'Outils de scribe', path: '/historique/outilsdescribe'},
+            { title: 'Vie quotidienne', path: '/historique/viequotidienne'}
         ],
     })
 }
 </script>
 
-<style>
-
+<style scoped>
+    .v-btn i:hover{
+        color: white;
+    }
 </style>

@@ -5,6 +5,10 @@ class itemDataService {
         return http.get("/items");
     }
 
+    findByType(type) {
+        return http.get(`/items?type=${type}`);
+    }
+
     get(id) {
         return http.get(`/items/${id}`);
     }
