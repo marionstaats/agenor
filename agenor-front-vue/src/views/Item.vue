@@ -66,6 +66,24 @@
                             ></v-select>
                         </v-col>
                     </v-row>
+
+                    <v-radio-group
+                        v-model="currentItem.inStock"
+                        row
+                        required
+                    >
+                        <v-radio
+                            label="In stock"
+                            :value="true"
+                            color="secondary"
+                        ></v-radio>
+                        <v-radio
+                            label="Not in stock"
+                            :value="false"
+                            color="secondary"
+                        ></v-radio>
+                    </v-radio-group>
+
                     <v-textarea
                         v-model="currentItem.description"
                         :rules="[(v) => !!v || 'Description is required']"
@@ -126,7 +144,7 @@ export default {
         return {
         currentItem: {},
         message: "",
-        types: ['broche', 'necklace', 'bague']
+            types: ['bagues','broche', 'colliers', 'penditifs', 'outilsdecouture', 'outilsdescribe', 'viequotidienne']
         };
     },
     methods: {
@@ -147,6 +165,7 @@ export default {
                 price: this.currentItem.price,
                 description: this.currentItem.description,
                 published: status,
+                inStock: this.currentItem.inStock,
                 mainImage: this.currentItem.mainImage,
                 smallImage1: this.currentItem.smallImage1,
                 smallImage2: this.currentItem.smallImage2,
@@ -189,6 +208,7 @@ export default {
                 price: this.currentItem.price,
                 description: this.currentItem.description,
                 published: this.currentItem.status,
+                inStock: this.currentItem.inStock,
                 mainImage: this.currentItem.mainImage,
                 smallImage1: this.currentItem.smallImage1,
                 smallImage2: this.currentItem.smallImage2,

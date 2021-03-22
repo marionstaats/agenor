@@ -57,10 +57,29 @@
                                     <v-radio
                                         label="Publish"
                                         value="true"
+                                        color="secondary"
                                     ></v-radio>
                                     <v-radio
                                         label="Do not publish (yet)"
                                         value="false"
+                                        color="secondary"
+                                    ></v-radio>
+                                </v-radio-group>
+
+                                <v-radio-group
+                                    v-model="currentItem.inStock"
+                                    row
+                                    required
+                                >
+                                    <v-radio
+                                        label="In stock"
+                                        value="true"
+                                        color="secondary"
+                                    ></v-radio>
+                                    <v-radio
+                                        label="Not in stock"
+                                        value="false"
+                                        color="secondary"
                                     ></v-radio>
                                 </v-radio-group>
 
@@ -149,6 +168,7 @@ export default {
                 price: 0,
                 description: "",
                 published: "",
+                inStock: "",
                 mainImage: "",
                 smallImage1: "",
                 smallImage2: "",
