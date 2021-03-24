@@ -1,42 +1,67 @@
 <template>
+    <v-container>
     <v-row justify="center">
-        <!-- Images -->
-        <v-col cols="10" md="4" class="ma-md-3" >
-            <v-img :src="currentItem.mainImage" contain></v-img>
-            <v-btn id="upload_widget" color="accent" class="mt-5">Change main image</v-btn>
-        </v-col>
+        <v-col cols="11" md="6">
+            <v-row>
+                <!-- Images -->
+                <v-col cols="12" md="3" align="center">
+                    <span class="text-caption">Main image</span>
+                    <v-img :src="require('../../../uploaded-files/' + currentItem.mainImage)" max-width="100"></v-img>
+                    <v-file-input
+                        :rules="[(v) => !v || v.size < 1000000 || 'Image should be less than 1 MB']"
+                        prepend-icon="mdi-camera"
+                        accept="image/*"
+                        show-size
+                        @change="hasMainImage = true"
+                    ></v-file-input>
+                    <v-btn color="success" small class="mt-2" :disabled="!hasMainImage">Update</v-btn>
+                </v-col>
+                <v-col cols="12" md="3" align="center">
+                    <span class="text-caption">Image 1</span>
+                    <v-img :src="require('../../../uploaded-files/' + currentItem.smallImage1)" max-width="100"></v-img>
+                    <v-file-input
+                        :rules="[(v) => !v || v.size < 1000000 || 'Image should be less than 1 MB']"
+                        prepend-icon="mdi-camera"
+                        accept="image/*"
+                        show-size
+                        @change="hasSmallImage1 = true"
+                    ></v-file-input>
+                    <v-btn color="success" small class="mt-2" :disabled="!hasSmallImage1">Update</v-btn>
+                    <v-btn color="error" small class="mt-2">Delete</v-btn>
+                </v-col>
+                <v-col cols="12" md="3" align="center">
+                    <span class="text-caption">Image 2</span>
+                    <v-img :src="require('../../../uploaded-files/' + currentItem.smallImage2)" max-width="100"></v-img>
+                    <v-file-input
+                        :rules="[(v) => !v || v.size < 1000000 || 'Image should be less than 1 MB']"
+                        prepend-icon="mdi-camera"
+                        accept="image/*"
+                        show-size
+                        @change="hasSmallImage2 = true"
+                    ></v-file-input>
+                    <v-btn color="success" small class="mt-2" :disabled="!hasSmallImage2">Update</v-btn>
+                    <v-btn color="error" small class="mt-2">Delete</v-btn>
+                </v-col>
+                <v-col cols="12" md="3" align="center">
+                    <span class="text-caption">Image 3</span>
+                    <v-img :src="require('../../../uploaded-files/' + currentItem.smallImage3)" max-width="100"></v-img>
+                    <v-file-input
+                        :rules="[(v) => !v || v.size < 1000000 || 'Image should be less than 1 MB']"
+                        prepend-icon="mdi-camera"
+                        accept="image/*"
+                        show-size
+                        @change="hasSmallImage3 = true"
+                    ></v-file-input>
+                    <v-btn color="success" small class="mt-2" :disabled="!hasSmallImage3">Update</v-btn>
+                    <v-btn color="error" small class="mt-2">Delete</v-btn>
+                </v-col>
 
-        <v-col cols="10" md="2" class="ma-md-3" align="center">
-            
-            <v-row>
-                <v-col cols="12" >
-                    <v-img :src="currentItem.smallImage1" max-height="200" contain>
-                    </v-img>
-                    <v-btn id="upload_widget" color="accent" class="mt-3" small>Change small image 1</v-btn>
-                </v-col>
             </v-row>
-            <v-row>
-                <v-col cols="12">
-                    <v-img :src="currentItem.smallImage2" max-height="200" contain>
-                    </v-img>
-                    <v-btn id="upload_widget" color="accent" class="mt-3" small>Change small image 2</v-btn>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col cols="12">
-                    <v-img :src="currentItem.smallImage3" max-height="200" contain>
-                    </v-img>
-                    <v-btn id="upload_widget" color="accent" class="mt-3" small>Change small image 3</v-btn>
-                </v-col>
-            </v-row>
-            
         </v-col>
 
         <!-- Info -->
-        <v-col cols="12" md="4" align="center">
-            <div v-if="currentItem" class="edit-form pa-5 ma-3">
-                <p class="headline">Edit your item</p>
-
+        <v-col cols="12" md="6" align="center">
+            <div v-if="currentItem" class="edit-form ma-3">
                 <v-form ref="form" lazy-validation>
                     <v-text-field
                         v-model="currentItem.title"
@@ -132,7 +157,7 @@
 
         </v-col>
     </v-row>
-
+    </v-container>
 </template>
 
 <script>
@@ -144,17 +169,21 @@ export default {
         return {
         currentItem: {},
         message: "",
-            types: ['bagues','broche', 'colliers', 'penditifs', 'outilsdecouture', 'outilsdescribe', 'viequotidienne']
+        types: ['bagues','broches', 'colliers', 'penditifs', 'outilsdecouture', 'outilsdescribe', 'viequotidienne'],
+        hasMainImage: false, 
+        hasSmallImage1: false,
+        hasSmallImage2: false,
+        hasSmallImage3: false,
         };
     },
     methods: {
         getItem(id) {
             itemDataService.get(id)
                 .then((response) => {
-                this.currentItem = response.data;
+                    this.currentItem = response.data;
                 })
                 .catch((e) => {
-                console.log(e);
+                    console.log(e);
                 });
         },
 
@@ -165,6 +194,7 @@ export default {
                 price: this.currentItem.price,
                 description: this.currentItem.description,
                 published: status,
+                type: this.currentItem.type,
                 inStock: this.currentItem.inStock,
                 mainImage: this.currentItem.mainImage,
                 smallImage1: this.currentItem.smallImage1,
@@ -207,6 +237,7 @@ export default {
                 title: this.currentItem.title,
                 price: this.currentItem.price,
                 description: this.currentItem.description,
+                type: this.currentItem.type,
                 published: this.currentItem.status,
                 inStock: this.currentItem.inStock,
                 mainImage: this.currentItem.mainImage,
@@ -222,6 +253,9 @@ export default {
                 .catch((e) => {
                 console.log(e);
                 });
+        },
+        deleteImage() {
+
         }
     },
     mounted() {

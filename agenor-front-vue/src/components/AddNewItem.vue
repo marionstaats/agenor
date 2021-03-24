@@ -15,7 +15,7 @@
                 </v-card-title>
 
                 <v-card-text>
-                    <v-form ref="form" lazy-validation>
+                    <v-form ref="form" v-model="isValid">
 
                         <v-row>
                             <v-col cols="12" md="7">
@@ -43,6 +43,7 @@
                                         :items="types"
                                         label="Type"
                                         v-model="currentItem.type"
+                                        :rules="[(v) => !!v || 'Type is required']"
                                         color="secondary"
                                         required
                                         ></v-select>
@@ -52,7 +53,7 @@
                                 <v-radio-group
                                     v-model="currentItem.publish"
                                     row
-                                    required
+                                    mandatory
                                 >
                                     <v-radio
                                         label="Publish"
@@ -69,7 +70,7 @@
                                 <v-radio-group
                                     v-model="currentItem.inStock"
                                     row
-                                    required
+                                    mandatory
                                 >
                                     <v-radio
                                         label="In stock"
@@ -96,16 +97,17 @@
                             </v-col>
 
                             <!-- Images -->
+                            <!-- Main image -->
                             <v-col cols="12" md="5">
-                                <v-alert v-if="message" color="red" dark dense>
-                                    {{ message }}
+                                <v-alert v-if="messageMainImage" color="red" dark dense>
+                                    {{ messageMainImage }}
                                 </v-alert>
                                 <v-row>
                                     <v-col cols="9">
                                         <v-file-input
                                             :rules="[(v) => !v || v.size < 1000000 || 'Image should be less than 1 MB']"
                                             prepend-icon="mdi-camera"
-                                            label="Images"
+                                            label="Main image"
                                             accept="image/*"
                                             show-size
                                             required
@@ -119,8 +121,89 @@
                                     </v-col>
                                 </v-row>
                                 
-                                <div v-for="(name, i) in imageNames" :key="i">
-                                    {{ name }}
+                                <div v-if="currentItem.mainImage">
+                                    Main image: {{ mainImage.name }}
+                                </div>
+
+                                <!-- Small image 1 -->
+                                <v-alert v-if="messageSmallImage1" color="red" dark dense>
+                                    {{ messageSmallImage1 }}
+                                </v-alert>
+                                <v-row>
+                                    <v-col cols="9">
+                                        <v-file-input
+                                            :rules="[(v) => !v || v.size < 1000000 || 'Image should be less than 1 MB']"
+                                            prepend-icon="mdi-camera"
+                                            label="Small image 1"
+                                            accept="image/*"
+                                            show-size
+                                            required
+                                            @change="selectFile1"
+                                        ></v-file-input>
+                                    </v-col>
+                                    <v-col cols="3" align-self="center">
+                                        <v-btn color="success" dark small @click="upload1">
+                                            Upload
+                                        </v-btn>
+                                    </v-col>
+                                </v-row>
+                                
+                                <div v-if="currentItem.smallImage1">
+                                    Small image 1: {{ smallImage1.name }}
+                                </div>
+
+                                <!-- Small image 2 -->
+                                <v-alert v-if="messageSmallImage2" color="red" dark dense>
+                                    {{ messageSmallImage2 }}
+                                </v-alert>
+                                <v-row>
+                                    <v-col cols="9">
+                                        <v-file-input
+                                            :rules="[(v) => !v || v.size < 1000000 || 'Image should be less than 1 MB']"
+                                            prepend-icon="mdi-camera"
+                                            label="Small image 2"
+                                            accept="image/*"
+                                            show-size
+                                            required
+                                            @change="selectFile2"
+                                        ></v-file-input>
+                                    </v-col>
+                                    <v-col cols="3" align-self="center">
+                                        <v-btn color="success" dark small @click="upload2">
+                                            Upload
+                                        </v-btn>
+                                    </v-col>
+                                </v-row>
+                                
+                                <div v-if="currentItem.smallImage2">
+                                    Small image 2: {{ smallImage2.name }}
+                                </div>
+
+                                <!-- Small image 3 -->
+                                <v-alert v-if="messageSmallImage3" color="red" dark dense>
+                                    {{ messageSmallImage3 }}
+                                </v-alert>
+                                <v-row>
+                                    <v-col cols="9">
+                                        <v-file-input
+                                            :rules="[(v) => !v || v.size < 1000000 || 'Image should be less than 1 MB']"
+                                            prepend-icon="mdi-camera"
+                                            label="Small image 3"
+                                            accept="image/*"
+                                            show-size
+                                            required
+                                            @change="selectFile3"
+                                        ></v-file-input>
+                                    </v-col>
+                                    <v-col cols="3" align-self="center">
+                                        <v-btn color="success" dark small @click="upload3">
+                                            Upload
+                                        </v-btn>
+                                    </v-col>
+                                </v-row>
+                                
+                                <div v-if="currentItem.smallImage3">
+                                    Small image 3: {{ smallImage3.name }}
                                 </div>
 
                             </v-col>
@@ -142,6 +225,7 @@
                 <v-btn
                     color="blue darken-1"
                     text
+                    :disabled="!isValid"
                     @click="save"
                 >
                     Save
@@ -160,12 +244,19 @@ export default {
     data: () => {
         return {
             dialog: false,
-            currentImage: undefined,
-            imageNames: [],
-            message: "",
+            isValid: true,
+            mainImage: undefined,
+            messageMainImage: "",
+            smallImage1: undefined,
+            messageSmallImage1: "",
+            smallImage2: undefined,
+            messageSmallImage2: "",
+            smallImage3: undefined,
+            messageSmallImage3: "",
+
             currentItem: {
                 title: "",
-                price: 0,
+                price: "",
                 description: "",
                 published: "",
                 inStock: "",
@@ -174,49 +265,156 @@ export default {
                 smallImage2: "",
                 smallImage3: ""
             },
-            types: ['bagues','broche', 'colliers', 'penditifs', 'outilsdecouture', 'outilsdescribe', 'viequotidienne']
+            types: ['bagues','broches', 'colliers', 'penditifs', 'outilsdecouture', 'outilsdescribe', 'viequotidienne']
         }
     },
     methods: {
 
         selectFile(file) {
-            this.message = "";
-            this.currentImage = file;
+            this.messageMainImage = "";
+            this.mainImage = file;
         },
+        selectFile1(file) {
+            this.messageSmallImage1 = "";
+            this.smallImage1 = file;
+        },
+        selectFile2(file) {
+            this.messageSmallImage2 = "";
+            this.smallImage2 = file;
+        },
+        selectFile3(file) {
+            this.messageSmallImage3 = "";
+            this.smallImage3 = file;
+        },
+
         upload() {
-            if (!this.currentImage) {
-                this.message = "Please select a file!";
+            if (!this.mainImage) {
+                this.messageMainImage = "Please select a file!";
                 return;
             }
 
-            this.message = "";
+            this.messageMainImage = "";
 
-            imageDataService.upload(this.currentImage)
+            imageDataService.upload(this.mainImage)
                 .then((response) => {
-                    this.message = response.data.message;
-                    this.imageNames.push(this.currentImage.name);
+                    this.messageMainImage = response.data.message;
+                    setTimeout(this.hideMessageMainImage, 2000);
+
                     this.currentItem.mainImage = response.data.id;
-                    this.currentImage = undefined;
-                    return imageDataService.get(response.data.id);
                 })
                 .catch((e) => {
-                    this.message = "Could not upload the file!";
-                    this.currentImage = undefined;
+                    this.messageMainImage = "Could not upload the file!";
+                    setTimeout(this.hideMessageMainImage, 3000);
+
+                    this.mainImage = undefined;
                     console.log(e);
                 });
         },
-        close () {
+        hideMessageMainImage() {this.messageMainImage = ""},
+
+        upload1() {
+            if (!this.smallImage1) {
+                this.messageSmallImage1 = "Please select a file!";
+                return;
+            }
+
+            this.messageSmallImage1 = "";
+
+            imageDataService.upload(this.smallImage1)
+                .then((response) => {
+                    this.messageSmallImage1 = response.data.message;
+                    setTimeout(this.hideMessageSmallImage1, 2000);
+
+                    this.currentItem.smallImage1 = response.data.id;
+                })
+                .catch((e) => {
+                    this.messageSmallImage1 = "Could not upload the file!";
+                    setTimeout(this.hideMessageSmallImage1, 3000);
+
+                    this.smallImage1 = undefined;
+                    console.log(e);
+                });
+        },
+        hideMessageSmallImage1() {this.messageSmallImage1 = ""},
+
+        upload2() {
+            if (!this.smallImage2) {
+                this.messageSmallImage2 = "Please select a file!";
+                return;
+            }
+
+            this.messageSmallImage2 = "";
+
+            imageDataService.upload(this.smallImage2)
+                .then((response) => {
+                    this.messageSmallImage2 = response.data.message;
+                    setTimeout(this.hideMessageSmallImage2, 2000);
+
+                    this.currentItem.smallImage2 = response.data.id;
+                })
+                .catch((e) => {
+                    this.messageSmallImage2 = "Could not upload the file!";
+                    setTimeout(this.hideMessageSmallImage2, 3000);
+
+                    this.smallImage2 = undefined;
+                    console.log(e);
+                });
+        },
+        hideMessageSmallImage2() {this.messageSmallImage2 = ""},
+
+        upload3() {
+            if (!this.smallImage3) {
+                this.messageSmallImage3 = "Please select a file!";
+                return;
+            }
+
+            this.messageSmallImage3 = "";
+
+            imageDataService.upload(this.smallImage3)
+                .then((response) => {
+                    this.messageSmallImage3 = response.data.message;
+                    setTimeout(this.hideMessageSmallImage3, 2000);
+
+                    this.currentItem.smallImage3 = response.data.id;
+                })
+                .catch((e) => {
+                    this.messageSmallImage3 = "Could not upload the file!";
+                    setTimeout(this.hideMessageSmallImage3, 3000);
+
+                    this.smallImage3 = undefined;
+                    console.log(e);
+                });
+        },
+        hideMessageSmallImage3() {this.messageSmallImage3 = ""},
+
+        deleteImages() {
+            if(this.currentItem.mainImage) {imageDataService.delete(this.currentItem.mainImage)}
+            if(this.currentItem.smallImage1) {imageDataService.delete(this.currentItem.smallImage1)}
+            if(this.currentItem.smallImage2) {imageDataService.delete(this.currentItem.smallImage2)}
+            if(this.currentItem.smallImage3) {imageDataService.delete(this.currentItem.smallImage3)}
+        },
+        reset() {
             this.$refs.form.reset();
-            this.$emit('refreshItems');
-            this.imageNames = [];
+            this.currentItem = {};
+            this.mainImage = undefined;
+            this.smallImage1 = undefined;
+            this.smallImage2 = undefined;
+            this.smallImage3 = undefined;
+        },
+        async close () {
+            await this.deleteImages();
+            this.reset();
             this.dialog = false;
         },
         save () {
             itemDataService.create(this.currentItem)
-                .then( () => this.close() )
+                .then( () => {
+                    this.reset();
+                    this.$emit('refreshItems');
+                    this.dialog = false;
+                })
                 .catch( e => console.log(e) )       
         }
-
     }
 }
 </script>

@@ -42,17 +42,17 @@
                     </template>
 
                     <template v-slot:[`item.mainImage`]="{ item }">
-                        <v-img :src="item.mainImage" contain max-height="120" class="ma-3"></v-img>
+                        <v-img :src="require('../../../uploaded-files/' + item.smallImage1)" contain max-height="120" class="ma-3"></v-img>
                     </template>
 
                     <template v-slot:[`item.smallImage1`]="{ item }">
-                        <v-img :src="item.smallImage1" contain max-height="120" class="ma-3"></v-img>
+                        <v-img :src="require('../../../uploaded-files/' + item.smallImage1)" contain max-height="120" class="ma-3"></v-img>
                     </template>
                     <template v-slot:[`item.smallImage2`]="{ item }">
-                        <v-img :src="item.smallImage2" contain max-height="120" class="ma-3"></v-img>
+                        <v-img :src="require('../../../uploaded-files/' + item.smallImage2)" contain max-height="120" class="ma-3"></v-img>
                     </template>
                     <template v-slot:[`item.smallImage3`]="{ item }">
-                        <v-img :src="item.smallImage3" contain max-height="120" class="ma-3"></v-img>
+                        <v-img :src="require('../../../uploaded-files/' + item.smallImage3)" contain max-height="120" class="ma-3"></v-img>
                     </template>
 
 

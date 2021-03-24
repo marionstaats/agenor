@@ -1,20 +1,20 @@
 import http from "../http-common";
 
 class imageDataService {
-    getAll() {
-        return http.get("/images");
-    }
+    // getAll() {
+    //     return http.get("/files");
+    // }
 
-    get(id) {
-        return http.get(`/images/${id}`);
-    }
+    // get(id) {
+    //     return http.get(`/files/${id}`);
+    // }
 
     upload(image) {
         let formData = new FormData();
 
-        formData.append("image", image);
+        formData.append("file", image);
 
-        return http.post("/upload", formData, {
+        return http.post("/uploadFile", formData, {
             headers: {
                 "Content-Type": "multipart/form-data"
             }
@@ -25,9 +25,9 @@ class imageDataService {
     //     return http.put(`/items/${id}`, data);
     // }
 
-    // delete(id) {
-    //     return http.delete(`/items/${id}`);
-    // }
+    delete(id) {
+        return http.delete(`/images/${id}`);
+    }
 
 }
 
