@@ -53,13 +53,13 @@
                         <v-list-item-title>Catalogue moderne</v-list-item-title>
                     </v-list-item>
 
-                    <v-list-item to="/procesdetravail">
+<!--                     <v-list-item to="/procesdetravail">
                         <v-list-item-icon>
                         <v-icon>mdi-hammer-wrench</v-icon>
                         </v-list-item-icon>
                         <v-list-item-title>Procès de travail</v-list-item-title>
                     </v-list-item>
-                    <v-list-item to="/contact">
+ -->                    <v-list-item to="/contact">
                         <v-list-item-icon>
                         <v-icon>mdi-email</v-icon>
                         </v-list-item-icon>
@@ -114,7 +114,7 @@
                 </v-list>
             </v-menu>
 
-            <v-tab to="/procesdetravail">Procès de travail</v-tab>
+            <!-- <v-tab to="/procesdetravail">Procès de travail</v-tab> -->
             <v-tab to="/contact">Contact</v-tab>
 
         </v-tabs>

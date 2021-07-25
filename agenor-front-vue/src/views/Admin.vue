@@ -100,7 +100,9 @@ export default {
             this.items = [];
             itemDataService.getAll()
                 .then(response => {
-                    this.items = response.data.map(this.getDisplayItem);
+                    if (response.data != "") {
+                        this.items = response.data.map(this.getDisplayItem);
+                    }
                 })
                 .catch(e => {
                     console.log('Error getting all items: ', e);

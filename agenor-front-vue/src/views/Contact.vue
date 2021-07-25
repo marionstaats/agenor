@@ -22,7 +22,7 @@
             </v-list-item>
           </div>
         </v-col>
-        <v-col cols="12" sm="6">
+<!--         <v-col cols="12" sm="6">
           <h3>Formulaire de contact</h3>
         <v-form
             ref="form"
@@ -66,7 +66,7 @@
           </v-form>
 
         </v-col>
-      </v-row>
+ -->      </v-row>
     </v-container>
   </div>
 </template>
