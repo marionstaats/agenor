@@ -5,6 +5,7 @@ import com.agenor.javaagenor.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = "http://localhost:8082")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
 public class FileUploadController {
@@ -56,6 +57,17 @@ public class FileUploadController {
         return "redirect:/";
     }
 
+    @DeleteMapping("/deleteFile/{filename:.+}")
+    public ResponseEntity<HttpStatus> deleteItem(@PathVariable("filename") String filename) {
+        try {
+            if(filename.isEmpty())
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            storageService.deleteFile(filename);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @ExceptionHandler(StorageFileNotFoundException.class)
     public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {

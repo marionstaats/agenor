@@ -19,13 +19,13 @@
 
                                 <v-row class="ma-3">
                                     <v-col cols="4">
-                                        <v-img :src="require('../../../uploaded-files/' + item.smallImage1)" class="img-pointer" @click="dialog=true"></v-img>
+                                        <v-img v-if="item.smallImage1" :src="require('../../../uploaded-files/' + item.smallImage1)" class="img-pointer" @click="dialog=true"></v-img>
                                     </v-col>
                                     <v-col cols="4">
-                                        <v-img :src="require('../../../uploaded-files/' + item.smallImage2)" class="img-pointer" @click="dialog=true"></v-img>
+                                        <v-img v-if="item.smallImage2" :src="require('../../../uploaded-files/' + item.smallImage2)" class="img-pointer" @click="dialog=true"></v-img>
                                     </v-col>
                                     <v-col cols="4">
-                                        <v-img :src="require('../../../uploaded-files/' + item.smallImage3)" class="img-pointer" @click="dialog=true"></v-img>
+                                        <v-img v-if="item.smallImage3" :src="require('../../../uploaded-files/' + item.smallImage3)" class="img-pointer" @click="dialog=true"></v-img>
                                     </v-col>
                                 </v-row>
                             </v-col>
@@ -38,12 +38,15 @@
                             :src="require('../../../uploaded-files/' + items[index].mainImage)"
                             ></v-carousel-item>
                             <v-carousel-item
+                            v-if="item.smallImage1"
                             :src="require('../../../uploaded-files/' + items[index].smallImage1)"
                             ></v-carousel-item>
                             <v-carousel-item
+                            v-if="item.smallImage2"
                             :src="require('../../../uploaded-files/' + items[index].smallImage2)"
                             ></v-carousel-item>
                             <v-carousel-item
+                            v-if="item.smallImage3"
                             :src="require('../../../uploaded-files/' + items[index].smallImage3)"
                             ></v-carousel-item>
 

@@ -1,5 +1,6 @@
 package com.agenor.javaagenor.storage;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -14,10 +15,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-
-import org.springframework.stereotype.Service;
 
 @Service
 public class FileSystemStorageService implements StorageService{
@@ -96,7 +94,18 @@ public class FileSystemStorageService implements StorageService{
     }
 
     @Override
+    public void deleteFile(String filename) {
+        Path myPath = load(filename);
+        try {
+            Files.delete(myPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void init() {
+
         try {
             Files.createDirectories(rootLocation);
         }

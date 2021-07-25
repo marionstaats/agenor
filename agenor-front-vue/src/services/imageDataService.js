@@ -25,8 +25,8 @@ class imageDataService {
     //     return http.put(`/items/${id}`, data);
     // }
 
-    delete(id) {
-        return http.delete(`/images/${id}`);
+    delete(fileName) {
+        return http.delete(`/deleteFile/${fileName}`);
     }
 
 }

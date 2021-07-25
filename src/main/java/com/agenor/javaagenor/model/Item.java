@@ -1,7 +1,5 @@
 package com.agenor.javaagenor.model;
 
-import com.agenor.javaagenor.repository.ImageRepository;
-
 import javax.persistence.*;
 
 @Entity
