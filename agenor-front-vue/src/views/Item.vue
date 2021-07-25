@@ -6,7 +6,7 @@
                 <!-- Images -->
                 <v-col cols="12" md="3" align="center">
                     <span class="text-caption">Main image</span>
-                    <v-img :src="require('../../../uploaded-files/' + currentItem.mainImage)" max-width="100"></v-img>
+                    <v-img v-if="currentItem.mainImage" :src="require('../../../uploaded-files/' + currentItem.mainImage)" max-width="100"></v-img>
                     <v-file-input
                         :rules="[(v) => !v || v.size < 1000000 || 'Image should be less than 1 MB']"
                         prepend-icon="mdi-camera"
@@ -18,7 +18,7 @@
                 </v-col>
                 <v-col cols="12" md="3" align="center">
                     <span class="text-caption">Image 1</span>
-                    <v-img :src="require('../../../uploaded-files/' + currentItem.smallImage1)" max-width="100"></v-img>
+                    <v-img v-if="currentItem.smallImage1" :src="require('../../../uploaded-files/' + currentItem.smallImage1)" max-width="100"></v-img>
                     <v-file-input
                         :rules="[(v) => !v || v.size < 1000000 || 'Image should be less than 1 MB']"
                         prepend-icon="mdi-camera"
@@ -27,11 +27,11 @@
                         @change="hasSmallImage1 = true"
                     ></v-file-input>
                     <v-btn color="success" small class="mt-2" :disabled="!hasSmallImage1">Update</v-btn>
-                    <v-btn color="error" small class="mt-2">Delete</v-btn>
+                    <v-btn v-if="currentItem.smallImage1" color="error" small class="mt-2" @click="deleteImage('smallImage1', currentItem.smallImage1)">Delete</v-btn>
                 </v-col>
                 <v-col cols="12" md="3" align="center">
                     <span class="text-caption">Image 2</span>
-                    <v-img :src="require('../../../uploaded-files/' + currentItem.smallImage2)" max-width="100"></v-img>
+                    <v-img v-if="currentItem.smallImage2" :src="require('../../../uploaded-files/' + currentItem.smallImage2)" max-width="100"></v-img>
                     <v-file-input
                         :rules="[(v) => !v || v.size < 1000000 || 'Image should be less than 1 MB']"
                         prepend-icon="mdi-camera"
@@ -40,11 +40,11 @@
                         @change="hasSmallImage2 = true"
                     ></v-file-input>
                     <v-btn color="success" small class="mt-2" :disabled="!hasSmallImage2">Update</v-btn>
-                    <v-btn color="error" small class="mt-2">Delete</v-btn>
+                    <v-btn v-if="currentItem.smallImage2" color="error" small class="mt-2">Delete</v-btn>
                 </v-col>
                 <v-col cols="12" md="3" align="center">
                     <span class="text-caption">Image 3</span>
-                    <v-img :src="require('../../../uploaded-files/' + currentItem.smallImage3)" max-width="100"></v-img>
+                    <v-img v-if="currentItem.smallImage3" :src="require('../../../uploaded-files/' + currentItem.smallImage3)" max-width="100"></v-img>
                     <v-file-input
                         :rules="[(v) => !v || v.size < 1000000 || 'Image should be less than 1 MB']"
                         prepend-icon="mdi-camera"
@@ -53,7 +53,7 @@
                         @change="hasSmallImage3 = true"
                     ></v-file-input>
                     <v-btn color="success" small class="mt-2" :disabled="!hasSmallImage3">Update</v-btn>
-                    <v-btn color="error" small class="mt-2">Delete</v-btn>
+                    <v-btn v-if="currentItem.smallImage3" color="error" small class="mt-2">Delete</v-btn>
                 </v-col>
 
             </v-row>
@@ -138,10 +138,6 @@
                         Publish
                     </v-btn>
 
-                    <v-btn color="error" small class="mr-2" @click="deleteItem">
-                        Delete
-                    </v-btn>
-
                     <v-btn color="success" small @click="updateItem">
                         Update
                     </v-btn>
@@ -162,6 +158,7 @@
 
 <script>
 import itemDataService from "../services/itemDataService";
+import imageDataService from "../services/imageDataService";
 
 export default {
     name: "item",
@@ -213,24 +210,14 @@ export default {
 
         updateItem() {
             itemDataService.update(this.currentItem.id, this.currentItem)
-                .then((response) => {
-                    console.log(response.data);
+                .then(() => {
                     this.message = "The item was updated successfully!";
                 })
                 .catch((e) => {
                     console.log(e);
                 });
         },
-
-        deleteItem() {
-            itemDataService.delete(this.currentItem.id)
-                .then(() => {
-                this.$router.push({ name: "admin" });
-                })
-                .catch((e) => {
-                console.log(e);
-                });
-        },
+        
         updateImage() {
             var data = {
                 id: this.currentItem.id,
@@ -254,12 +241,15 @@ export default {
                 console.log(e);
                 });
         },
-        deleteImage() {
-
+        deleteImage(image, imageName) {
+            this.currentItem[image] = "";
+            this.updateItem();
+            imageDataService.delete(imageName)
+                .then(() => {console.log("hoora")})
+                .catch((e) => {console.log(e)})
         }
     },
     mounted() {
-        this.message = "";
         this.getItem(this.$route.params.id);
     },
 }

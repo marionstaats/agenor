@@ -51,7 +51,7 @@
                                 </v-row>
 
                                 <v-radio-group
-                                    v-model="currentItem.publish"
+                                    v-model="currentItem.published"
                                     row
                                     mandatory
                                 >
@@ -105,7 +105,7 @@
                                 <v-row>
                                     <v-col cols="9">
                                         <v-file-input
-                                            :rules="[(v) => !v || v.size < 1000000 || 'Image should be less than 1 MB']"
+                                            :rules="[(v) => !v || v.size < 20000000 || 'Image should be less than 20 MB']"
                                             prepend-icon="mdi-camera"
                                             label="Main image"
                                             accept="image/*"
@@ -132,7 +132,7 @@
                                 <v-row>
                                     <v-col cols="9">
                                         <v-file-input
-                                            :rules="[(v) => !v || v.size < 1000000 || 'Image should be less than 1 MB']"
+                                            :rules="[(v) => !v || v.size < 20000000 || 'Image should be less than 20 MB']"
                                             prepend-icon="mdi-camera"
                                             label="Small image 1"
                                             accept="image/*"
@@ -159,7 +159,7 @@
                                 <v-row>
                                     <v-col cols="9">
                                         <v-file-input
-                                            :rules="[(v) => !v || v.size < 1000000 || 'Image should be less than 1 MB']"
+                                            :rules="[(v) => !v || v.size < 20000000 || 'Image should be less than 20 MB']"
                                             prepend-icon="mdi-camera"
                                             label="Small image 2"
                                             accept="image/*"
@@ -186,7 +186,7 @@
                                 <v-row>
                                     <v-col cols="9">
                                         <v-file-input
-                                            :rules="[(v) => !v || v.size < 1000000 || 'Image should be less than 1 MB']"
+                                            :rules="[(v) => !v || v.size < 20000000 || 'Image should be less than 20 MB']"
                                             prepend-icon="mdi-camera"
                                             label="Small image 3"
                                             accept="image/*"
@@ -273,18 +273,22 @@ export default {
         selectFile(file) {
             this.messageMainImage = "";
             this.mainImage = file;
+            this.currentItem.mainImage = file.name;
         },
         selectFile1(file) {
             this.messageSmallImage1 = "";
             this.smallImage1 = file;
+            this.currentItem.smallImage1 = file.name;
         },
         selectFile2(file) {
             this.messageSmallImage2 = "";
             this.smallImage2 = file;
+            this.currentItem.smallImage2 = file.name;
         },
         selectFile3(file) {
             this.messageSmallImage3 = "";
             this.smallImage3 = file;
+            this.currentItem.smallImage3 = file.name;
         },
 
         upload() {
@@ -296,11 +300,9 @@ export default {
             this.messageMainImage = "";
 
             imageDataService.upload(this.mainImage)
-                .then((response) => {
-                    this.messageMainImage = response.data.message;
+                .then(() => {
+                    this.messageMainImage = "Image uploaded successfully!";
                     setTimeout(this.hideMessageMainImage, 2000);
-
-                    this.currentItem.mainImage = response.data.id;
                 })
                 .catch((e) => {
                     this.messageMainImage = "Could not upload the file!";
@@ -321,18 +323,16 @@ export default {
             this.messageSmallImage1 = "";
 
             imageDataService.upload(this.smallImage1)
-                .then((response) => {
-                    this.messageSmallImage1 = response.data.message;
+                .then(() => {
+                    this.messageSmallImage1 = "Image uploaded successfully!";
                     setTimeout(this.hideMessageSmallImage1, 2000);
-
-                    this.currentItem.smallImage1 = response.data.id;
                 })
                 .catch((e) => {
                     this.messageSmallImage1 = "Could not upload the file!";
                     setTimeout(this.hideMessageSmallImage1, 3000);
 
                     this.smallImage1 = undefined;
-                    console.log(e);
+                    console.log('error:', e);
                 });
         },
         hideMessageSmallImage1() {this.messageSmallImage1 = ""},
@@ -346,11 +346,9 @@ export default {
             this.messageSmallImage2 = "";
 
             imageDataService.upload(this.smallImage2)
-                .then((response) => {
-                    this.messageSmallImage2 = response.data.message;
+                .then(() => {
+                    this.messageSmallImage2 = "Image uploaded successfully!";
                     setTimeout(this.hideMessageSmallImage2, 2000);
-
-                    this.currentItem.smallImage2 = response.data.id;
                 })
                 .catch((e) => {
                     this.messageSmallImage2 = "Could not upload the file!";
@@ -371,11 +369,9 @@ export default {
             this.messageSmallImage3 = "";
 
             imageDataService.upload(this.smallImage3)
-                .then((response) => {
-                    this.messageSmallImage3 = response.data.message;
+                .then(() => {
+                    this.messageSmallImage3 = "Image uploaded successfully!";
                     setTimeout(this.hideMessageSmallImage3, 2000);
-
-                    this.currentItem.smallImage3 = response.data.id;
                 })
                 .catch((e) => {
                     this.messageSmallImage3 = "Could not upload the file!";

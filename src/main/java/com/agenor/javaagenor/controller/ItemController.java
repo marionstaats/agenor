@@ -35,7 +35,6 @@ public class ItemController {
 
             return new ResponseEntity<>(items, HttpStatus.OK);
         } catch (Exception e) {
-            System.out.println(e);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -44,11 +43,7 @@ public class ItemController {
     public ResponseEntity<Item> getItemById(@PathVariable("id") long id) {
         Optional<Item> itemData = itemRepository.findById(id);
 
-        if (itemData.isPresent()) {
-            return new ResponseEntity<>(itemData.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return itemData.map(item -> new ResponseEntity<>(item, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/items")
