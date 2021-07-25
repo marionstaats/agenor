@@ -26,7 +26,7 @@
 </template>
 
 <script>
-// import userService from "@/services/userService";
+import userService from "@/services/userService";
 
 export default {
     data: () => {
@@ -37,24 +37,20 @@ export default {
     },
     methods: {
         login() {
-            this.$router.push("/admin");
+            let user = {
+                email: this.email,
+                password: this.password
+            };
 
-            // let user = {
-            //     email: this.email,
-            //     password: this.password
-            // };
-
-            // userService.loginUser(user)
-            //     .then(response => {
-            //         if (response.data.accessToken) {
-            //         localStorage.setItem('user', JSON.stringify(response.data));
-            //         }
-
-            //         return response.data;
-            //         console.log(response);
-            //         this.$router.push({ name: "admin" });
-            //     })
-            //     .catch(e => console.log(e))
+            userService.loginUser(user)
+                .then(response => {
+                    if (response.data.accessToken) {
+                        localStorage.setItem('user', JSON.stringify(response.data));
+                    }
+                    console.log(response);
+                    this.$router.push({ name: "admin" });
+                })
+                .catch(e => console.log(e))
         }
 
     }
