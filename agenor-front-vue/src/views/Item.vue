@@ -6,19 +6,19 @@
                 <!-- Images -->
                 <v-col cols="12" md="3" align="center">
                     <span class="text-caption">Main image</span>
-                    <v-img v-if="currentItem.mainImage" :src="require('../../../uploaded-files/' + currentItem.mainImage)" max-width="100"></v-img>
+                    <v-img v-if="hasImage(currentItem.mainImage)" :src="require('../../../uploaded-files/' + currentItem.mainImage)" max-width="100"></v-img>
                 </v-col>
                 <v-col cols="12" md="3" align="center">
                     <span class="text-caption">Image 1</span>
-                    <v-img v-if="currentItem.smallImage1" :src="require('../../../uploaded-files/' + currentItem.smallImage1)" max-width="100"></v-img>
+                    <v-img v-if="hasImage(currentItem.smallImage1)" :src="require('../../../uploaded-files/' + currentItem.smallImage1)" max-width="100"></v-img>
                 </v-col>
                 <v-col cols="12" md="3" align="center">
                     <span class="text-caption">Image 2</span>
-                    <v-img v-if="currentItem.smallImage2" :src="require('../../../uploaded-files/' + currentItem.smallImage2)" max-width="100"></v-img>
+                    <v-img v-if="hasImage(currentItem.smallImage2)" :src="require('../../../uploaded-files/' + currentItem.smallImage2)" max-width="100"></v-img>
                 </v-col>
                 <v-col cols="12" md="3" align="center">
                     <span class="text-caption">Image 3</span>
-                    <v-img v-if="currentItem.smallImage3" :src="require('../../../uploaded-files/' + currentItem.smallImage3)" max-width="100"></v-img>
+                    <v-img v-if="hasImage(currentItem.smallImage3)" :src="require('../../../uploaded-files/' + currentItem.smallImage3)" max-width="100"></v-img>
                 </v-col>
 
             </v-row>
@@ -133,6 +133,20 @@ export default {
         };
     },
     methods: {
+        hasImage(image) {
+            if (image) {
+                try {
+                    require('../../../uploaded-files/' + image )
+                    return true
+                }
+                catch (e) {
+                    console.log('Error getting image: ' + e)
+                    return false
+                }
+            }
+            return false
+        },
+
         getItem(id) {
             itemDataService.get(id)
                 .then((response) => {
