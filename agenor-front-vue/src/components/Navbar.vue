@@ -122,15 +122,15 @@
         <v-spacer></v-spacer>
         
         <!-- Social media -->
-        <v-btn icon href="https://www.facebook.com">
+        <v-btn icon :href="facebook" target="_blank">
             <v-icon>mdi-facebook</v-icon>
         </v-btn>
 
-        <v-btn icon href="https://www.facebook.com">
+        <v-btn icon :href="instagram" target="_blank">
             <v-icon>mdi-instagram</v-icon>
         </v-btn>
 
-        <v-btn icon href="https://www.facebook.com">
+        <v-btn icon :href="pinterest" target="_blank">
             <v-icon>mdi-pinterest</v-icon>
         </v-btn>
 
@@ -151,8 +151,13 @@
 </template>
 
 <script>
+import { urls } from "@/helpers/urls";
+
 export default {
     data: () => ({
+        facebook: urls.FACEBOOK,
+        pinterest: urls.PINTEREST,
+        instagram: urls.INSTAGRAM,
         drawer: false,
         historiqueMenu: [
             { title: 'Bagues', path: '/historique/bagues'},
