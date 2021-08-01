@@ -52,9 +52,16 @@ const router = new VueRouter({
   routes
 })
 
-// router.beforeEach((to, from, next) => {
-//   if (to.name !== 'Login' && !isAuthenticated) next({ name: 'Login' })
-//   else next()
-// })
+router.beforeEach((to, from, next) => {
+  const publicPages = ['Login', 'Home', 'Historique', 'Contact', 'Workproces'];
+  const authRequired = !publicPages.includes(to.name);
+  const loggedIn = localStorage.getItem('user');
+
+  if (authRequired && !loggedIn) {
+    next('/login');
+  } else {
+    next();
+  }
+})
 
 export default router

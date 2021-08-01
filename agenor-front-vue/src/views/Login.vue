@@ -3,12 +3,12 @@
             <div class="login">             
                 <v-form ref="user">
                     <v-text-field
-                    v-model="email"
-                    label="E-mail"
+                    v-model="user.username"
+                    label="Username"
                     required
                     ></v-text-field>
                     <v-text-field
-                    v-model="password"
+                    v-model="user.password"
                     label="Password"
                     type="password"
                     required
@@ -16,7 +16,7 @@
                     <v-btn
                     color="success"
                     class="mr-4"
-                    @click="login"
+                    @click="handleLogin"
                     >
                         Submit
                     </v-btn>
@@ -26,33 +26,37 @@
 </template>
 
 <script>
-import userService from "@/services/userService";
+import User from '../models/user'
 
 export default {
     data: () => {
         return {
-            email: "",
-            password: "",
+            user: new User('', ''),
+        }
+    },
+    computed: {
+        loggedIn() {
+            return this.$store.state.auth.status.loggedIn;
+        }
+    },
+    created() {
+        if (this.loggedIn) {
+            this.$router.push('/admin');
         }
     },
     methods: {
-        login() {
-            let user = {
-                email: this.email,
-                password: this.password
-            };
-
-            userService.loginUser(user)
-                .then(response => {
-                    if (response.data.accessToken) {
-                        localStorage.setItem('user', JSON.stringify(response.data));
+        handleLogin() {
+            if (this.user.username && this.user.password) {
+                this.$store.dispatch('auth/login', this.user).then(
+                    () => {
+                        this.$router.push('/admin');
+                    },
+                    error => {
+                        console.log('Error login: ' + error)                    
                     }
-                    console.log(response);
-                    this.$router.push({ name: "admin" });
-                })
-                .catch(e => console.log(e))
+                )
+            }
         }
-
     }
 }
 </script>

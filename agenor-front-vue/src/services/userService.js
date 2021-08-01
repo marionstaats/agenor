@@ -1,10 +1,16 @@
-import http from "../http-common";
+import axios from 'axios';
+import authHeader from './authHeader';
 
-class userService {
-    loginUser(user) {
-        return http.post("/login", user);
+const API_URL = 'http://localhost:8081/api/test/';
+
+class UserService {
+    getPublicContent() {
+        return axios.get(API_URL + 'all');
     }
 
+    getUserBoard() {
+        return axios.get(API_URL + 'user', { headers: authHeader() });
+    }
 }
 
-export default new userService();
+export default new UserService();

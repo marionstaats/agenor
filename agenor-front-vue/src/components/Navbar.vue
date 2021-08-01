@@ -141,7 +141,11 @@
         </v-btn>
 
         <!-- Logout -->
-        <v-btn class="gold" v-if="(this.$route.path === '/admin') || (this.$route.path === `/item/${this.$route.params.id}`)">
+        <v-btn 
+            class="gold" 
+            v-if="(this.$route.path === '/admin') || (this.$route.path === `/item/${this.$route.params.id}`)"
+            @click="handleLogout"
+        >
             <span>Logout</span>
             <v-icon>mdi-logout</v-icon>
         </v-btn>
@@ -168,7 +172,14 @@ export default {
             { title: 'Outils de scribe', path: '/historique/outilsdescribe'},
             { title: 'Vie quotidienne', path: '/historique/viequotidienne'}
         ],
-    })
+    }),
+
+    methods: {
+        handleLogout() {
+            this.$store.dispatch('auth/logout');
+            this.$router.push('/login');
+        }
+    }
 }
 </script>
 

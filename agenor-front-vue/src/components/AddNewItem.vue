@@ -273,22 +273,22 @@ export default {
         selectFile(file) {
             this.messageMainImage = "";
             this.mainImage = file;
-            this.currentItem.mainImage = file.name;
+            this.currentItem.mainImage = file?.name;
         },
         selectFile1(file) {
             this.messageSmallImage1 = "";
             this.smallImage1 = file;
-            this.currentItem.smallImage1 = file.name;
+            this.currentItem.smallImage1 = file?.name;
         },
         selectFile2(file) {
             this.messageSmallImage2 = "";
             this.smallImage2 = file;
-            this.currentItem.smallImage2 = file.name;
+            this.currentItem.smallImage2 = file?.name;
         },
         selectFile3(file) {
             this.messageSmallImage3 = "";
             this.smallImage3 = file;
-            this.currentItem.smallImage3 = file.name;
+            this.currentItem.smallImage3 = file?.name;
         },
 
         upload() {
