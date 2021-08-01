@@ -1,10 +1,10 @@
 <template>
   <div class="contact">
-    <v-snackbar v-model="snackbar" :timeout="3000" top color="khaki">
+<!--     <v-snackbar v-model="snackbar" :timeout="3000" top color="khaki">
       <span>Merci de votre message!</span>
       <v-btn text right color="white" @click="snackbar=false" class="ml-4">Close</v-btn>
     </v-snackbar>
-
+ -->
     <v-container>
       <v-row class="ma-5">
         <v-col cols="12" sm="6">
@@ -17,7 +17,11 @@
                 <v-icon>{{item.icon}}</v-icon>
               </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-title>{{item.text}}</v-list-item-title>
+                <v-list-item-title>
+                  <a :href="item.link" target="_blank">
+                    {{item.text}}
+                  </a>
+                </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </div>
@@ -72,6 +76,8 @@
 </template>
 
 <script>
+import { urls } from "@/helpers/urls";
+
 export default {
   data: () => ({
         items: [
@@ -81,37 +87,40 @@ export default {
           },
           {
             icon: 'mdi-facebook',
-            text: 'Link to facebook',
+            text: 'Facebook',
+            link: urls.FACEBOOK
           },
           { icon: 'mdi-instagram',
-            text: 'Link to instagram',
+            text: 'Instagram',
+            link: urls.INSTAGRAM
           },
                     {
             icon: 'mdi-pinterest',
-            text: 'Link to pinterest',
+            text: 'Pinterest',
+            link: urls.PINTEREST
           }
         ],
-        valid: false,
-        name: '',
-        nameRules: [
-          v => !!v || 'Nom est requise',
-        ],
-        email: '',
-        emailRules: [
-          v => !!v || 'E-mail est requise',
-          v => /.+@.+/.test(v) || 'Email doit être valide',      
-        ],
-        message: '',
-        messageRules: [
-          v => !!v || 'Message est requise',
-        ],
-        snackbar: false
+        // valid: false,
+        // name: '',
+        // nameRules: [
+        //   v => !!v || 'Nom est requise',
+        // ],
+        // email: '',
+        // emailRules: [
+        //   v => !!v || 'E-mail est requise',
+        //   v => /.+@.+/.test(v) || 'Email doit être valide',      
+        // ],
+        // message: '',
+        // messageRules: [
+        //   v => !!v || 'Message est requise',
+        // ],
+        // snackbar: false
       }),
-  methods: {
+/*   methods: {
     sendMail() {
       this.snackbar = true;
     }
   }
-}
+ */}
 </script>
 
