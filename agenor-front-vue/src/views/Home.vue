@@ -27,7 +27,7 @@
                     absolute
                     color="#036358"
                   >
-                    More info blabla
+                    Un orfèvre dans son atelier, Petrus Christus - 1449 Metropolitan Museum 
                   </v-overlay>
                 </v-fade-transition>
               </v-img>

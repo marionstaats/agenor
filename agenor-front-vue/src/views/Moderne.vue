@@ -77,14 +77,7 @@ export default {
     },
     computed: {
         title() {
-            if (this.$route.params.type == 'outilsdecouture') {
-                return 'Outils de couture'
-            } else if (this.$route.params.type == 'outilsdescribe') {
-                return 'Outils de scribe'
-            } else if (this.$route.params.type == 'viequotidienne') {
-                return 'Vie quotidienne'
-            }
-            return this.capitalize(this.$route.params.type);
+            return 'Catalogue moderne';
         }
     },
 
@@ -114,15 +107,8 @@ export default {
                     console.log('Error getting items: ', e);
                 });
         },
-        capitalize(string) {
-            return string.charAt(0).toUpperCase() + string.slice(1);
-        },
     },
-    watch: {
-        '$route.params.type': function() {
-            this.retrieveItems();
-        }
-    },
+    
     mounted() {
         this.retrieveItems();
     }

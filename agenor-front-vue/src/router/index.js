@@ -15,7 +15,11 @@ const routes = [
     name: 'Historique',
     component: () => import('../views/Historique.vue')
   },
-
+  {
+    path: '/moderne',
+    name: 'Moderne',
+    component: () => import('../views/Moderne.vue')
+  },
   {
     path: '/contact',
     name: 'Contact',
@@ -32,7 +36,7 @@ const routes = [
     component: () => import('../views/Login.vue')
   },
   {
-    path: '/admin',
+    path: '/mg0203ms',
     name: 'Admin',
     component: () => import('../views/Admin.vue')
   },

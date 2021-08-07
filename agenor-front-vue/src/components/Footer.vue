@@ -1,7 +1,7 @@
 <template>
 
     <v-footer class="gold text-right">
-        {{ new Date().getFullYear() }} — <strong>Agenor</strong>
+        <strong>TVA: 0771.498.75 — Agenor</strong>
         <v-spacer></v-spacer>
         <strong>info@agenor.be</strong>
     </v-footer>

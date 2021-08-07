@@ -46,20 +46,20 @@
                         </v-list-item>
                     </v-list-group>
 
-                    <!-- <v-list-item>
+                    <v-list-item to="/moderne">
                         <v-list-item-icon>
                         <v-icon>mdi-string-lights</v-icon>
                         </v-list-item-icon>
                         <v-list-item-title>Catalogue moderne</v-list-item-title>
                     </v-list-item>
- -->
+
 <!--                     <v-list-item to="/procesdetravail">
                         <v-list-item-icon>
                         <v-icon>mdi-hammer-wrench</v-icon>
                         </v-list-item-icon>
                         <v-list-item-title>Procès de travail</v-list-item-title>
                     </v-list-item>
- -->                    <v-list-item to="/contact">
+ -->                <v-list-item to="/contact">
                         <v-list-item-icon>
                         <v-icon>mdi-email</v-icon>
                         </v-list-item-icon>
@@ -80,7 +80,7 @@
                     class="align-self-center mr-4"
                     v-bind="attrs"
                     v-on="on"
-                    v-bind:style= "($route.path.includes('/historique/') ? 'color: white;' : '' )"
+                    v-bind:style="($route.path.includes('/historique/') ? 'color: white;' : '' )"
                 >
                     Catalogue historique
                 </v-btn>
@@ -95,24 +95,7 @@
                 </v-list>
             </v-menu>
 
-            <!-- <v-menu open-on-hover>
-                <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                    text
-                    class="align-self-center mr-4"
-                    v-bind="attrs"
-                    v-on="on"
-                    v-bind:style= "($route.path.includes('/moderne/') ? 'color: white;' : '' )"
-                >
-                    Catalogue moderne
-                </v-btn>
-                </template>
-
-                <v-list class="gold">
-                    <v-list-item>Modern1</v-list-item>
-                    <v-list-item>Modenr2</v-list-item>
-                </v-list>
-            </v-menu> -->
+            <v-tab to="/moderne">Catalogue moderne</v-tab>
 
             <!-- <v-tab to="/procesdetravail">Procès de travail</v-tab> -->
             <v-tab to="/contact">Contact</v-tab>
@@ -135,7 +118,7 @@
         </v-btn>
 
         <!-- Back to admin menu -->
-        <v-btn class="mr-3 gold" v-if="this.$route.path === `/item/${this.$route.params.id}`" to="/admin">
+        <v-btn class="mr-3 gold" v-if="this.$route.path === `/item/${this.$route.params.id}`" to="/mg0203ms">
             <v-icon>mdi-arrow-left</v-icon>
             <span>Admin</span>
         </v-btn>
@@ -164,9 +147,11 @@ export default {
             { title: 'Broches', path: '/historique/broches'},
             { title: 'Colliers', path: '/historique/colliers'},
             { title: 'Pendentifs', path: '/historique/penditifs'},
-            { title: 'Outils de couture', path: '//historique/outilsdecouture'},
+            { title: 'Outils de couture', path: '/historique/outilsdecouture'},
             { title: 'Outils de scribe', path: '/historique/outilsdescribe'},
-            { title: 'Vie quotidienne', path: '/historique/viequotidienne'}
+            { title: 'Vie quotidienne', path: '/historique/viequotidienne'},
+            { title: 'Boutons', path: '/historique/boutons'},
+            { title: 'Epingles', path: '/historique/epingles'}
         ],
     })
 }
