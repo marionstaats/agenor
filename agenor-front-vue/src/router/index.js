@@ -41,7 +41,7 @@ const routes = [
     component: () => import('../views/Admin.vue')
   },
   {
-    path: "/item/:id",
+    path: "/mg0203ms/:id",
     name: "item",
     component: () => import("../views/Item")
   },
