@@ -3,8 +3,13 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
+import Cloudinary from "cloudinary-vue";
 
 Vue.config.productionTip = false
+
+Vue.use(Cloudinary, {
+  configuration: { cloudName: "agenor" }
+});
 
 new Vue({
   router,

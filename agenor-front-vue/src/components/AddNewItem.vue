@@ -97,114 +97,30 @@
                             </v-col>
 
                             <!-- Images -->
-                            <!-- Main image -->
                             <v-col cols="12" md="5">
-                                <v-alert v-if="messageMainImage" color="red" dark dense>
-                                    {{ messageMainImage }}
-                                </v-alert>
+                                <!-- Main image -->
                                 <v-row>
-                                    <v-col cols="9">
-                                        <v-file-input
-                                            :rules="[(v) => !v || v.size < 20000000 || 'Image should be less than 20 MB']"
-                                            prepend-icon="mdi-camera"
-                                            label="Main image"
-                                            accept="image/*"
-                                            show-size
-                                            required
-                                            @change="selectFile"
-                                        ></v-file-input>
-                                    </v-col>
-                                    <v-col cols="3" align-self="center">
-                                        <v-btn color="success" dark small @click="upload">
-                                            Upload
-                                        </v-btn>
-                                    </v-col>
+                                    <v-btn class="upload_widget" color="success" dark @click="openUploadModal('main')">Upload main image</v-btn>
+                                    <p v-if="successfullUploadMainImage">Main image successfully added!</p>
                                 </v-row>
-                                
-                                <div v-if="currentItem.mainImage">
-                                    Main image: {{ mainImage.name }}
-                                </div>
 
                                 <!-- Small image 1 -->
-                                <v-alert v-if="messageSmallImage1" color="red" dark dense>
-                                    {{ messageSmallImage1 }}
-                                </v-alert>
                                 <v-row>
-                                    <v-col cols="9">
-                                        <v-file-input
-                                            :rules="[(v) => !v || v.size < 20000000 || 'Image should be less than 20 MB']"
-                                            prepend-icon="mdi-camera"
-                                            label="Small image 1"
-                                            accept="image/*"
-                                            show-size
-                                            required
-                                            @change="selectFile1"
-                                        ></v-file-input>
-                                    </v-col>
-                                    <v-col cols="3" align-self="center">
-                                        <v-btn color="success" dark small @click="upload1">
-                                            Upload
-                                        </v-btn>
-                                    </v-col>
+                                    <v-btn class="upload_widget" color="success" dark @click="openUploadModal(1)">Upload small image 1</v-btn>
+                                    <p v-if="successfullUploadSmall1">Small image 1 successfully added!</p>
                                 </v-row>
-                                
-                                <div v-if="currentItem.smallImage1">
-                                    Small image 1: {{ smallImage1.name }}
-                                </div>
 
                                 <!-- Small image 2 -->
-                                <v-alert v-if="messageSmallImage2" color="red" dark dense>
-                                    {{ messageSmallImage2 }}
-                                </v-alert>
                                 <v-row>
-                                    <v-col cols="9">
-                                        <v-file-input
-                                            :rules="[(v) => !v || v.size < 20000000 || 'Image should be less than 20 MB']"
-                                            prepend-icon="mdi-camera"
-                                            label="Small image 2"
-                                            accept="image/*"
-                                            show-size
-                                            required
-                                            @change="selectFile2"
-                                        ></v-file-input>
-                                    </v-col>
-                                    <v-col cols="3" align-self="center">
-                                        <v-btn color="success" dark small @click="upload2">
-                                            Upload
-                                        </v-btn>
-                                    </v-col>
+                                    <v-btn class="upload_widget" color="success" dark @click="openUploadModal(2)">Upload small image 2</v-btn>
+                                    <p v-if="successfullUploadSmall2">Small image 2 successfully added!</p>
                                 </v-row>
-                                
-                                <div v-if="currentItem.smallImage2">
-                                    Small image 2: {{ smallImage2.name }}
-                                </div>
 
                                 <!-- Small image 3 -->
-                                <v-alert v-if="messageSmallImage3" color="red" dark dense>
-                                    {{ messageSmallImage3 }}
-                                </v-alert>
                                 <v-row>
-                                    <v-col cols="9">
-                                        <v-file-input
-                                            :rules="[(v) => !v || v.size < 20000000 || 'Image should be less than 20 MB']"
-                                            prepend-icon="mdi-camera"
-                                            label="Small image 3"
-                                            accept="image/*"
-                                            show-size
-                                            required
-                                            @change="selectFile3"
-                                        ></v-file-input>
-                                    </v-col>
-                                    <v-col cols="3" align-self="center">
-                                        <v-btn color="success" dark small @click="upload3">
-                                            Upload
-                                        </v-btn>
-                                    </v-col>
+                                    <v-btn class="upload_widget" color="success" dark @click="openUploadModal(3)">Upload small image 3</v-btn>
+                                    <p v-if="successfullUploadSmall3">Small image 3 successfully added!</p>
                                 </v-row>
-                                
-                                <div v-if="currentItem.smallImage3">
-                                    Small image 3: {{ smallImage3.name }}
-                                </div>
 
                             </v-col>
                         </v-row>
@@ -225,7 +141,7 @@
                 <v-btn
                     color="blue darken-1"
                     text
-                    :disabled="!isValid"
+                    :disabled="!isValid || !successfullUploadMainImage"
                     @click="save"
                 >
                     Save
@@ -237,7 +153,6 @@
 </template>
 
 <script>
-import imageDataService from "@/services/imageDataService";
 import itemDataService from "@/services/itemDataService";
 
 export default {
@@ -245,14 +160,11 @@ export default {
         return {
             dialog: false,
             isValid: true,
-            mainImage: undefined,
-            messageMainImage: "",
-            smallImage1: undefined,
-            messageSmallImage1: "",
-            smallImage2: undefined,
-            messageSmallImage2: "",
-            smallImage3: undefined,
-            messageSmallImage3: "",
+
+            successfullUploadMainImage: false,
+            successfullUploadSmall1: false,
+            successfullUploadSmall2: false,
+            successfullUploadSmall3: false,
 
             currentItem: {
                 title: "",
@@ -269,139 +181,40 @@ export default {
         }
     },
     methods: {
-
-        selectFile(file) {
-            this.messageMainImage = "";
-            this.mainImage = file;
-            this.currentItem.mainImage = file.name;
+        openUploadModal(index) {
+            window.cloudinary.openUploadWidget(
+                { 
+                    cloud_name: 'agenor',
+                    upload_preset: 'io0se5gr',
+                },
+                (error, result) => {
+                if (!error && result && result.event === "success") {
+                    if (index === 1) {
+                        this.currentItem.smallImage1 = result.info.url;
+                        this.successfullUploadSmall1 = true;
+                    } else if (index === 2) {
+                        this.currentItem.smallImage2 = result.info.url;
+                        this.successfullUploadSmall2 = true;
+                    } else if (index === 3) {
+                        this.currentItem.smallImage3 = result.info.url;
+                        this.successfullUploadSmall3 = true;
+                    } else if (index === 'main') {
+                        this.currentItem.mainImage = result.info.url;
+                        this.successfullUploadMainImage = true;
+                    }
+                }}).open();
         },
-        selectFile1(file) {
-            this.messageSmallImage1 = "";
-            this.smallImage1 = file;
-            this.currentItem.smallImage1 = file.name;
-        },
-        selectFile2(file) {
-            this.messageSmallImage2 = "";
-            this.smallImage2 = file;
-            this.currentItem.smallImage2 = file.name;
-        },
-        selectFile3(file) {
-            this.messageSmallImage3 = "";
-            this.smallImage3 = file;
-            this.currentItem.smallImage3 = file.name;
-        },
 
-        upload() {
-            if (!this.mainImage) {
-                this.messageMainImage = "Please select a file!";
-                return;
-            }
-
-            this.messageMainImage = "";
-
-            imageDataService.upload(this.mainImage)
-                .then(() => {
-                    this.messageMainImage = "Image uploaded successfully!";
-                    setTimeout(this.hideMessageMainImage, 2000);
-                })
-                .catch((e) => {
-                    this.messageMainImage = "Could not upload the file!";
-                    setTimeout(this.hideMessageMainImage, 3000);
-
-                    this.mainImage = undefined;
-                    console.log(e);
-                });
-        },
-        hideMessageMainImage() {this.messageMainImage = ""},
-
-        upload1() {
-            if (!this.smallImage1) {
-                this.messageSmallImage1 = "Please select a file!";
-                return;
-            }
-
-            this.messageSmallImage1 = "";
-
-            imageDataService.upload(this.smallImage1)
-                .then(() => {
-                    this.messageSmallImage1 = "Image uploaded successfully!";
-                    setTimeout(this.hideMessageSmallImage1, 2000);
-                })
-                .catch((e) => {
-                    this.messageSmallImage1 = "Could not upload the file!";
-                    setTimeout(this.hideMessageSmallImage1, 3000);
-
-                    this.smallImage1 = undefined;
-                    console.log('error:', e);
-                });
-        },
-        hideMessageSmallImage1() {this.messageSmallImage1 = ""},
-
-        upload2() {
-            if (!this.smallImage2) {
-                this.messageSmallImage2 = "Please select a file!";
-                return;
-            }
-
-            this.messageSmallImage2 = "";
-
-            imageDataService.upload(this.smallImage2)
-                .then(() => {
-                    this.messageSmallImage2 = "Image uploaded successfully!";
-                    setTimeout(this.hideMessageSmallImage2, 2000);
-                })
-                .catch((e) => {
-                    this.messageSmallImage2 = "Could not upload the file!";
-                    setTimeout(this.hideMessageSmallImage2, 3000);
-
-                    this.smallImage2 = undefined;
-                    console.log(e);
-                });
-        },
-        hideMessageSmallImage2() {this.messageSmallImage2 = ""},
-
-        upload3() {
-            if (!this.smallImage3) {
-                this.messageSmallImage3 = "Please select a file!";
-                return;
-            }
-
-            this.messageSmallImage3 = "";
-
-            imageDataService.upload(this.smallImage3)
-                .then(() => {
-                    this.messageSmallImage3 = "Image uploaded successfully!";
-                    setTimeout(this.hideMessageSmallImage3, 2000);
-                })
-                .catch((e) => {
-                    this.messageSmallImage3 = "Could not upload the file!";
-                    setTimeout(this.hideMessageSmallImage3, 3000);
-
-                    this.smallImage3 = undefined;
-                    console.log(e);
-                });
-        },
-        hideMessageSmallImage3() {this.messageSmallImage3 = ""},
-
-        deleteImages() {
-            if(this.currentItem.mainImage) {imageDataService.delete(this.currentItem.mainImage)}
-            if(this.currentItem.smallImage1) {imageDataService.delete(this.currentItem.smallImage1)}
-            if(this.currentItem.smallImage2) {imageDataService.delete(this.currentItem.smallImage2)}
-            if(this.currentItem.smallImage3) {imageDataService.delete(this.currentItem.smallImage3)}
-        },
         reset() {
             this.$refs.form.reset();
             this.currentItem = {};
-            this.mainImage = undefined;
-            this.smallImage1 = undefined;
-            this.smallImage2 = undefined;
-            this.smallImage3 = undefined;
         },
+
         async close () {
-            await this.deleteImages();
             this.reset();
             this.dialog = false;
         },
+
         save () {
             itemDataService.create(this.currentItem)
                 .then( () => {
@@ -418,5 +231,9 @@ export default {
 <style scoped>
     .myaddbutton:focus::before {
         opacity: 0 !important;
+    }
+
+    .upload_widget {
+        margin: 10px 0;
     }
 </style>

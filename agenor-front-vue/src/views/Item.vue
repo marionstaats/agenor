@@ -6,19 +6,23 @@
                 <!-- Images -->
                 <v-col cols="12" md="3" align="center">
                     <span class="text-caption">Main image</span>
-                    <v-img v-if="hasImage(currentItem.mainImage)" :src="require('../../../uploaded-files/' + currentItem.mainImage)" max-width="100"></v-img>
+                    <v-img v-bind:src="currentItem.mainImage" max-height="100" max-width="100"></v-img>
+                    <v-btn id="upload_widget" color="accent" small class="mt-5" @click=" openUploadModal('main')">Update</v-btn>
                 </v-col>
                 <v-col cols="12" md="3" align="center">
                     <span class="text-caption">Image 1</span>
-                    <v-img v-if="hasImage(currentItem.smallImage1)" :src="require('../../../uploaded-files/' + currentItem.smallImage1)" max-width="100"></v-img>
+                    <v-img v-bind:src="currentItem.smallImage1" max-height="100" max-width="100"></v-img>
+                    <v-btn id="upload_widget" color="accent" small class="mt-5" @click="openUploadModal(1)">Update</v-btn>
                 </v-col>
                 <v-col cols="12" md="3" align="center">
                     <span class="text-caption">Image 2</span>
-                    <v-img v-if="hasImage(currentItem.smallImage2)" :src="require('../../../uploaded-files/' + currentItem.smallImage2)" max-width="100"></v-img>
+                    <v-img v-bind:src="currentItem.smallImage2" max-height="100" max-width="100"></v-img>
+                    <v-btn id="upload_widget" color="accent" small class="mt-5" @click="openUploadModal(2)">Update</v-btn>
                 </v-col>
                 <v-col cols="12" md="3" align="center">
                     <span class="text-caption">Image 3</span>
-                    <v-img v-if="hasImage(currentItem.smallImage3)" :src="require('../../../uploaded-files/' + currentItem.smallImage3)" max-width="100"></v-img>
+                    <v-img v-bind:src="currentItem.smallImage3" max-height="100" max-width="100"></v-img>
+                    <v-btn id="upload_widget" color="accent" small class="mt-5" @click="openUploadModal(3)">Update</v-btn>
                 </v-col>
 
             </v-row>
@@ -133,20 +137,6 @@ export default {
         };
     },
     methods: {
-        hasImage(image) {
-            if (image) {
-                try {
-                    require('../../../uploaded-files/' + image )
-                    return true
-                }
-                catch (e) {
-                    console.log('Error getting image: ' + e)
-                    return false
-                }
-            }
-            return false
-        },
-
         getItem(id) {
             itemDataService.get(id)
                 .then((response) => {
@@ -190,6 +180,54 @@ export default {
                     console.log(e);
                 });
         },
+
+        openUploadModal(index) {
+            window.cloudinary.openUploadWidget(
+                { 
+                    cloud_name: 'agenor',
+                    upload_preset: 'io0se5gr',
+                },
+                (error, result) => {
+                if (!error && result && result.event === "success") {
+                    this.currentItem.mainImage = result.info.url;
+                    if (index === 1) {
+                        this.currentItem.smallImage1 = result.info.url;
+                    } else if (index === 2) {
+                        this.currentItem.smallImage2 = result.info.url;
+                    } else if (index === 3) {
+                        this.currentItem.smallImage3 = result.info.url;
+                    } else if (index === 'main') {
+                        this.currentItem.mainImage = result.info.url;
+                    }
+                    this.updateImage(); 
+                    }
+                }).open();
+        },
+
+        updateImage() {
+            const data = {
+                id: this.currentItem.id,
+                title: this.currentItem.title,
+                price: this.currentItem.price,
+                description: this.currentItem.description,
+                published: this.currentItem.published,
+                type: this.currentItem.type,
+                inStock: this.currentItem.inStock,
+                mainImage: this.currentItem.mainImage,
+                smallImage1: this.currentItem.smallImage1,
+                smallImage2: this.currentItem.smallImage2,
+                smallImage3: this.currentItem.smallImage3
+            };
+
+            itemDataService.update(this.currentItem.id, data)
+                .then(() => {
+                    this.message = "The image was updated successfully!";
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+        }
+
     },
 
     mounted() {
