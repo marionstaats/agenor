@@ -8,7 +8,7 @@
                     <v-card class="elevation-3" :min-width="$vuetify.breakpoint.smAndDown ? 350 : 570" min-height="357">
                         <v-row no-gutters >
                             <v-col cols="12" md="6" align-self="center" >
-                                <v-img v-bind:src="item.mainImage" class="img-pointer ml-sm-5" @click="dialog=true"></v-img>
+                                <v-img v-bind:src="item.mainImage" class="img-pointer ml-sm-5" max-height="300" @click="dialog=true"></v-img>
                             </v-col>
                             <v-col cols="12" md="6">
                                 <v-card-title

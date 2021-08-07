@@ -186,6 +186,7 @@ export default {
                 { 
                     cloud_name: 'agenor',
                     upload_preset: 'io0se5gr',
+                    folder: this.currentItem.title === "" ? new Date() : this.currentItem.title
                 },
                 (error, result) => {
                 if (!error && result && result.event === "success") {
@@ -208,9 +209,13 @@ export default {
         reset() {
             this.$refs.form.reset();
             this.currentItem = {};
+            this.successfullUploadMainImage = false;
+            this.successfullUploadSmall1 = false;
+            this.successfullUploadSmall2 = false;
+            this.successfullUploadSmall3 = false;
         },
 
-        async close () {
+        close () {
             this.reset();
             this.dialog = false;
         },
