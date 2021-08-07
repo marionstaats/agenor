@@ -42,17 +42,17 @@
                     </template>
 
                     <template v-slot:[`item.mainImage`]="{ item }">
-                        <v-img v-if="hasImage(item.mainImage)" :src="require('../../../uploaded-files/' + item.mainImage)" max-height="100" max-width="100" class="my-2"></v-img>
+                        <v-img v-bind:src="item.mainImage" max-height="100" max-width="100" class="my-2"></v-img>
                     </template>
 
                     <template v-slot:[`item.smallImage1`]="{ item }">
-                        <v-img v-if="hasImage(item.smallImage1)" :src="require('../../../uploaded-files/' + item.smallImage1)" max-height="100" max-width="100" class="my-2"></v-img>
+                        <v-img v-bind:src="item.smallImage1" max-height="100" max-width="100" class="my-2"></v-img>
                     </template>
                     <template v-slot:[`item.smallImage2`]="{ item }">
-                        <v-img v-if="hasImage(item.smallImage2)" :src="require('../../../uploaded-files/' + item.smallImage2)" max-width="100" max-height="100" class="my-2"></v-img>
+                        <v-img v-bind:src="item.smallImage2" max-height="100" max-width="100" class="my-2"></v-img>
                     </template>
                     <template v-slot:[`item.smallImage3`]="{ item }">
-                        <v-img v-if="hasImage(item.smallImage3)" :src="require('../../../uploaded-files/' + item.smallImage3)" max-width="100" max-height="100" class="my-2"></v-img>
+                        <v-img v-bind:src="item.smallImage3" max-height="100" max-width="100" class="my-2"></v-img>
                     </template>
 
 
@@ -69,7 +69,6 @@
 
 <script>
 import itemDataService from "../services/itemDataService";
-import imageDataService from "../services/imageDataService";
 import AddNewItem from "@/components/AddNewItem"
 
 export default {
@@ -97,20 +96,6 @@ export default {
     },
 
     methods: {
-        hasImage(image) {
-            if (image) {
-                try {
-                    require('../../../uploaded-files/' + image )
-                    return true
-                }
-                catch (e) {
-                    console.log('Error getting image: ' + e)
-                    return false
-                }
-            }
-            return false
-        },
-
         retrieveItems() {
             this.items = [];
             itemDataService.getAll()
@@ -157,24 +142,6 @@ export default {
             }
         },
         deleteItem(item) {
-            imageDataService.delete(item.mainImage)
-                .then(() => {console.log("hooramain")})
-                .catch((e) => {console.log(e)})
-            if(item.smallImage1){
-                imageDataService.delete(item.smallImage1)
-                    .then(() => {console.log("hoora1")})
-                    .catch((e) => {console.log(e)})
-            }
-            if(item.smallImage2){
-                imageDataService.delete(item.smallImage2)
-                    .then(() => {console.log("hoora2")})
-                    .catch((e) => {console.log(e)})
-            }
-            if(item.smallImage3){
-                imageDataService.delete(item.smallImage3)
-                    .then(() => {console.log("hoora3")})
-                    .catch((e) => {console.log(e)})
-            }
             itemDataService.delete(item.id)
                 .then(() => {
                     this.retrieveItems();

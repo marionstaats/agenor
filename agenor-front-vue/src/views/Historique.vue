@@ -8,7 +8,7 @@
                     <v-card class="elevation-3" :min-width="$vuetify.breakpoint.smAndDown ? 350 : 570" min-height="357">
                         <v-row no-gutters >
                             <v-col cols="12" md="6" align-self="center" >
-                                <v-img v-if="hasImage(item.mainImage)" :src="require('../../../uploaded-files/' + item.mainImage)" class="img-pointer ml-sm-5" @click="dialog=true"></v-img>
+                                <v-img v-bind:src="item.mainImage" class="img-pointer ml-sm-5" max-height="300" @click="dialog=true"></v-img>
                             </v-col>
                             <v-col cols="12" md="6">
                                 <v-card-title
@@ -20,13 +20,13 @@
 
                                 <v-row class="ma-3">
                                     <v-col cols="4">
-                                        <v-img v-if="hasImage(item.smallImage1)" :src="require('../../../uploaded-files/' + item.smallImage1)" class="img-pointer" @click="dialog=true"></v-img>
+                                        <v-img v-bind:src="item.smallImage1" class="img-pointer" @click="dialog=true"></v-img>
                                     </v-col>
                                     <v-col cols="4">
-                                        <v-img v-if="hasImage(item.smallImage2)" :src="require('../../../uploaded-files/' + item.smallImage2)" class="img-pointer" @click="dialog=true"></v-img>
+                                        <v-img v-bind:src="item.smallImage2" class="img-pointer" @click="dialog=true"></v-img>
                                     </v-col>
                                     <v-col cols="4">
-                                        <v-img v-if="hasImage(item.smallImage3)" :src="require('../../../uploaded-files/' + item.smallImage3)" class="img-pointer" @click="dialog=true"></v-img>
+                                        <v-img v-bind:src="item.smallImage3" class="img-pointer" @click="dialog=true"></v-img>
                                     </v-col>
                                 </v-row>
                             </v-col>
@@ -35,23 +35,10 @@
 
                     <v-dialog v-model="dialog" width="600">
                         <v-carousel>
-                            <v-carousel-item
-                            v-if="hasImage(items[index].mainImage)"
-                            :src="require('../../../uploaded-files/' + items[index].mainImage)"
-                            ></v-carousel-item>
-                            <v-carousel-item
-                            v-if="hasImage(item.smallImage1)"
-                            :src="require('../../../uploaded-files/' + items[index].smallImage1)"
-                            ></v-carousel-item>
-                            <v-carousel-item
-                            v-if="hasImage(item.smallImage2)"
-                            :src="require('../../../uploaded-files/' + items[index].smallImage2)"
-                            ></v-carousel-item>
-                            <v-carousel-item
-                            v-if="hasImage(item.smallImage3)"
-                            :src="require('../../../uploaded-files/' + items[index].smallImage3)"
-                            ></v-carousel-item>
-
+                            <v-carousel-item :src="items[index].mainImage"></v-carousel-item>
+                            <v-carousel-item :src="items[index].smallImage1"></v-carousel-item>
+                            <v-carousel-item :src="items[index].smallImage2"></v-carousel-item>
+                            <v-carousel-item :src="items[index].smallImage3"></v-carousel-item>
                         </v-carousel>
                     </v-dialog>
 
@@ -89,20 +76,6 @@ export default {
     },
 
     methods: {
-        hasImage(image) {
-            if (image) {
-                try {
-                    require('../../../uploaded-files/' + image )
-                    return true
-                }
-                catch (e) {
-                    console.log('Error getting image: ' + e)
-                    return false
-                }
-            }
-            return false
-        },
-
         retrieveItems() {
             itemDataService.getAll()
                 .then(response => {
