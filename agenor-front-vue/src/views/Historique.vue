@@ -2,6 +2,7 @@
     <div class="vieux">
         <h3 class="ma-4 black--text">{{title}}</h3>
         <v-container>
+            <div v-if="items.length > 0">
             <v-row>
                 <v-col cols="12" sm="6" xl="4" v-for="(item, index) in items" :key="index">
                     <v-card class="elevation-3" :min-width="$vuetify.breakpoint.smAndDown ? 350 : 570" min-height="357">
@@ -56,6 +57,10 @@
 
                 </v-col>
             </v-row>
+            </div>
+            <div v-else>
+                <h3>Il n'y a aucun élément à afficher</h3>
+            </div>    
         </v-container>
     </div>
 </template>
@@ -88,10 +93,10 @@ export default {
 
         retrieveItems() {
             this.title = this.capitalize(this.$route.params.type);
-            itemDataService.findByType(this.capitalize(this.$route.params.type))
+            itemDataService.getAll()
                 .then(response => {
                     this.items = response.data.filter(item => {
-                        return item.published === true;
+                        return item.published === true && item.type == this.$route.params.type;
                     });         
                 })
                 .catch(e => {
