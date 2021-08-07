@@ -129,7 +129,7 @@ export default {
         return {
         currentItem: {},
         message: "",
-        types: ['bagues','broches', 'colliers', 'penditifs', 'outilsdecouture', 'outilsdescribe', 'viequotidienne'],
+        types: ['bagues','broches', 'colliers', 'penditifs', 'outilsdecouture', 'outilsdescribe', 'viequotidienne', 'boutons', 'epingles', 'moderne'],
         };
     },
     methods: {

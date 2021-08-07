@@ -265,7 +265,7 @@ export default {
                 smallImage2: "",
                 smallImage3: ""
             },
-            types: ['bagues','broches', 'colliers', 'penditifs', 'outilsdecouture', 'outilsdescribe', 'viequotidienne']
+            types: ['bagues','broches', 'colliers', 'penditifs', 'outilsdecouture', 'outilsdescribe', 'viequotidienne', 'boutons', 'epingles', 'moderne']
         }
     },
     methods: {

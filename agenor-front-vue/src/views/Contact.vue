@@ -9,7 +9,7 @@
       <v-row class="ma-5">
         <v-col cols="12" sm="6">
           <p>
-            Toutes demandes de devis ou commande se fait par mail. Il n'y a volontairement pas de boutiques en ligne afin de garder un contact personnel avec chaque client.
+            Toutes demandes de devis ou commande se fait par mail ou Facebook. Il n'y a volontairement pas de boutique en ligne afin de garder un contact personnel avec chaque client.
           </p>
           <div v-for="(item, i) in items" :key="i">
             <v-list-item>
