@@ -46,13 +46,13 @@
                         </v-list-item>
                     </v-list-group>
 
-                    <v-list-item>
+                    <!-- <v-list-item>
                         <v-list-item-icon>
                         <v-icon>mdi-string-lights</v-icon>
                         </v-list-item-icon>
                         <v-list-item-title>Catalogue moderne</v-list-item-title>
                     </v-list-item>
-
+ -->
 <!--                     <v-list-item to="/procesdetravail">
                         <v-list-item-icon>
                         <v-icon>mdi-hammer-wrench</v-icon>
@@ -95,7 +95,7 @@
                 </v-list>
             </v-menu>
 
-            <v-menu open-on-hover>
+            <!-- <v-menu open-on-hover>
                 <template v-slot:activator="{ on, attrs }">
                 <v-btn
                     text
@@ -112,7 +112,7 @@
                     <v-list-item>Modern1</v-list-item>
                     <v-list-item>Modenr2</v-list-item>
                 </v-list>
-            </v-menu>
+            </v-menu> -->
 
             <!-- <v-tab to="/procesdetravail">Procès de travail</v-tab> -->
             <v-tab to="/contact">Contact</v-tab>
