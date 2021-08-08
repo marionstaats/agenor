@@ -40,7 +40,7 @@ public class ItemController {
     }
 
     @GetMapping("/items/{id}")
-    public ResponseEntity<Item> getItemById(@PathVariable("id") long id) {
+    public ResponseEntity<Item> getItemById(@PathVariable("id") String id) {
         Optional<Item> itemData = itemRepository.findById(id);
 
         return itemData.map(item -> new ResponseEntity<>(item, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -70,7 +70,7 @@ public class ItemController {
     }
 
     @PutMapping("/items/{id}")
-    public ResponseEntity<Item> updateItem(@PathVariable("id") long id, @RequestBody Item item) {
+    public ResponseEntity<Item> updateItem(@PathVariable("id") String id, @RequestBody Item item) {
         Optional<Item> itemData = itemRepository.findById(id);
 
         if (itemData.isPresent()) {
@@ -94,7 +94,7 @@ public class ItemController {
     }
 
     @DeleteMapping("/items/{id}")
-    public ResponseEntity<HttpStatus> deleteItem(@PathVariable("id") long id) {
+    public ResponseEntity<HttpStatus> deleteItem(@PathVariable("id") String id) {
         try {
             itemRepository.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

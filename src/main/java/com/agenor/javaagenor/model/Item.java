@@ -1,43 +1,25 @@
 package com.agenor.javaagenor.model;
 
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "items")
+//Overrides collection name by 'items'
+@Document(collection = "items")
+
 public class Item {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private String id;
 
-    @Column(name = "title")
     private String title;
-
-    @Column(name = "price")
     private float price;
-
-    @Column(name = "description")
     private String description;
-
-    @Column(name = "published")
     private boolean published;
-
-    @Column(name = "inStock")
     private boolean inStock;
-
-    @Column(name = "mainImage")
     private String mainImage;
-
-    @Column(name = "smallImage1")
     private String smallImage1;
-
-    @Column(name = "smallImage2")
     private String smallImage2;
-
-    @Column(name = "smallImage3")
     private String smallImage3;
-
-    @Column(name = "type")
     private String type;
 
     public Item() {
@@ -56,7 +38,7 @@ public class Item {
         this.type = type;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
