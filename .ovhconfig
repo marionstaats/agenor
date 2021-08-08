@@ -1,6 +1,0 @@
-app.engine=java
-app.engine.version=11
-http.firewall=none
-environment=production
-container.image=legacy
-
