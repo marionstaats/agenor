@@ -186,6 +186,7 @@ export default {
                 { 
                     cloud_name: 'agenor',
                     upload_preset: 'io0se5gr',
+                    folder: this.currentItem.title ? this.currentItem.title : new Date() 
                 },
                 (error, result) => {
                 if (!error && result && result.event === "success") {
