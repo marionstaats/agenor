@@ -190,7 +190,6 @@ export default {
                 },
                 (error, result) => {
                 if (!error && result && result.event === "success") {
-                    this.currentItem.mainImage = result.info.url;
                     if (index === 1) {
                         this.currentItem.smallImage1 = result.info.url;
                     } else if (index === 2) {
